@@ -24,6 +24,7 @@ import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController } from "context";
+import { whitespace } from "stylis";
 
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
   const [controller] = useMaterialUIController();
@@ -43,10 +44,10 @@ function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
         {...rest}
         position="relative"
         textAlign={align}
-        color={darkMode ? "white" : "secondary"}
+        color={darkMode ? "white" : "Black"}
         opacity={0.7}
         sx={({ typography: { size, fontWeightBold } }) => ({
-          fontSize: size.xxs,
+          fontSize: size.xs,
           fontWeight: fontWeightBold,
           textTransform: "uppercase",
           cursor: sorted && "pointer",

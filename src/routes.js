@@ -40,13 +40,21 @@ import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
+import PaymentIcon from "@mui/icons-material/Payment";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-
+import UserManagement from "layouts/UserManagement";
+// import Nutrition from "layouts/content&NutritionDatabase/page";
+import Subscription from "layouts/subscription&PaymentManagement/page";
+import AdminManagement from "layouts/adminStoryManagement/page";
 // @mui icons
+import UserDetail from "layouts/userDetail/page";
 import Icon from "@mui/material/Icon";
+import MealLogs from "components/MealLog/page";
+import CustomNotification from "layouts/customNotification/page";
+import ContactUs from "layouts/contact-Us/page";
 
 const routes = [
   {
@@ -57,62 +65,121 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/tables",
+  //   component: <Tables />,
+  // },
+
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
+    name: "User Management",
+    key: "users Management",
     icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
+    route: "/user",
+    component: <UserManagement />,
+  },
+  {
+    name: "User Detail",
+    key: "userDetail",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/user/:id",
+    component: <UserDetail />,
+  },
+  // {
+  //   type: "collapse",
+  //   name: " Nutrition Database",
+  //   key: "Nutrition Database",
+  //   icon: <Icon fontSize="small">Storage</Icon>,
+  //   route: "/content",
+  //   component: <Nutrition />,
+  // },
+
+  {
+    type: "collapse",
+    name: " Subsc & pay Management",
+    key: "SubscriptionManagement",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/Subscription",
+    component: <Subscription />,
   },
   {
     type: "collapse",
+    name: " Admin Story Management",
+    key: "adminStoryManagement",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/story",
+    component: <AdminManagement />,
+  },
+  {
+    type: "collapse",
+    name: " Custom Notification",
+    key: "customNotification",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/notification",
+    component: <CustomNotification />,
+  },
+  {
+    type: "collapse",
+    name: " Contact-Us",
+    key: "contactUs",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/contact-us",
+    component: <ContactUs />,
+  },
+
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   component: <Billing />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+  //   route: "/rtl",
+  //   component: <RTL />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
+  {
+    // type: "collapse",
     name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
+
+  // {
+  //   type: "collapse",
+  //   name: "Sign Up",
+  //   key: "sign-up",
+  //   icon: <Icon fontSize="small">assignment</Icon>,
+  //   route: "/authentication/sign-up",
+  //   component: <SignUp />,
+  // },
 ];
 
 export default routes;

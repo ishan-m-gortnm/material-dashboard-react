@@ -1,42 +1,108 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import DataTable from "examples/Tables/DataTable";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const [stats, setStats] = useState(null);
+  const [contactUsStats, setContactUsStats] = useState(null);
+  const [reload, setReload] = useState(1);
+
+  const columns = [
+    { Header: "S.No", accessor: "sno", align: "center" },
+    { Header: "Created At", accessor: "createdAt", align: "left" },
+    { Header: "Name", accessor: "name", align: "center" },
+
+    { Header: "Goal", accessor: "goal", align: "center" },
+    { Header: "Gender", accessor: "gender", align: "center" },
+    { Header: "Diet", accessor: "diet", align: "center" },
+    { Header: "Phone", accessor: "phone", align: "center" },
+    { Header: "Subscription", accessor: "subscription", align: "center" },
+    { Header: "BMI", accessor: "bmiCategory", align: "center" },
+  ];
+
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const [userStatsRes, contactUsRes] = await Promise.all([
+          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/stats/dashboard", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/contact-us?limit=1", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        setStats(userStatsRes.data.data.users);
+        setContactUsStats(contactUsRes.data.data.count);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchDashboardStats();
+  }, []);
+
+  const fetchContactUsData = async ({ pageIndex = 0, pageSize = 10 }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `https://api.qa.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const contactUsData = response.data?.data?.data || [];
+
+      const formattedRows = contactUsData.map((entry, index) => ({
+        sno: <div>{index + 1 + pageIndex * pageSize}</div>,
+        createdAt: <div>{new Date(entry.createdAt).toLocaleDateString()}</div>,
+        name: <div>{entry.details.name || "-"}</div>,
+        goal: <div>{entry.details.goal || "-"}</div>,
+        gender: <div>{entry.details.gender || "-"}</div>,
+        diet: <div>{entry.details.diet || "-"}</div>,
+        phone: <div>{entry.mobileNumber || "-"}</div>,
+        subscription: <div>{entry?.subscription?.planType || "-"}</div>,
+        bmiCategory: <div>{entry.details?.bmi?.toFixed(3) || "-"}</div>,
+        // regDate: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
+        message: (
+          <div
+            style={{
+              maxWidth: "300px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {entry.message}
+          </div>
+        ),
+      }));
+
+      return {
+        data: formattedRows,
+        total: response.data?.data?.count || 0,
+      };
+    } catch (err) {
+      console.error("Error fetching contact us data:", err);
+      return {
+        data: [],
+        total: 0,
+      };
+    }
+  };
+
+  if (!stats) return <div></div>;
 
   return (
     <DashboardLayout>
@@ -48,114 +114,66 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
+                title="Total Users"
+                count={stats.total}
               />
             </MDBox>
           </Grid>
+
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
+              <ComplexStatisticsCard icon="leaderboard" title="Active Users" count={stats.active} />
             </MDBox>
           </Grid>
+
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
+                title="Disabled Accounts"
+                count={stats.disabled}
               />
             </MDBox>
           </Grid>
+
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
                 icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                title="Subscribed Users"
+                count={stats.subscribed}
+              />
+            </MDBox>
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Non-Subscribed Users"
+                count={stats.nonSubscribed}
               />
             </MDBox>
           </Grid>
         </Grid>
-        <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox>
-        <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
+
+        {/* Contact Us Table */}
+        <MDBox mt={5}>
+          <DataTable
+            table={{ columns, rows: [] }}
+            fetchDataRows={fetchContactUsData}
+            isSorted={false}
+            entriesPerPage={true}
+            showTotalEntries={true}
+            // canSearch={true}
+            reload={reload}
+            noEndBorder
+          />
         </MDBox>
       </MDBox>
-      <Footer />
     </DashboardLayout>
   );
 }

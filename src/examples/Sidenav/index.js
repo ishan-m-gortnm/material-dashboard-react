@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, Navigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -26,6 +26,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
+import { useNavigate } from "react-router-dom";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -49,9 +50,17 @@ import {
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
+  const navigate = useNavigate();
+
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
-  const collapseName = location.pathname.replace("/", "");
+  // const collapseName = location.pathname.replace("/", "");
+  const pathname = location.pathname;
+
+  const confirmLogout = () => {
+    localStorage.clear();
+    navigate("/authentication/sign-in");
+  };
 
   let textColor = "white";
 
@@ -99,13 +108,19 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           <SidenavCollapse
             name={name}
             icon={icon}
-            active={key === collapseName}
+            // active={key === collapseName}
+            active={pathname === route || pathname.startsWith(`${route}/`)}
             noCollapse={noCollapse}
           />
         </Link>
       ) : (
         <NavLink key={key} to={route}>
-          <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
+          <SidenavCollapse
+            name={name}
+            icon={icon}
+            //  active={key === collapseName}
+            active={pathname === route || pathname.startsWith(`${route}/`)}
+          />
         </NavLink>
       );
     } else if (type === "title") {
@@ -161,7 +176,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {brand && (
+            <MDBox
+              component="img"
+              src="/banner.jpeg
+          "
+              alt="Brand"
+              width="2rem"
+            />
+          )}
           <MDBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
@@ -182,14 +205,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <MDBox p={2} mt="auto">
         <MDButton
           component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
           target="_blank"
           rel="noreferrer"
           variant="gradient"
           color={sidenavColor}
           fullWidth
+          onClick={confirmLogout}
         >
-          upgrade to pro
+          Logout
         </MDButton>
       </MDBox>
     </SidenavRoot>

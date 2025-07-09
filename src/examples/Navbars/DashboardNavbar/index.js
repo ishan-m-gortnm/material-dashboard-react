@@ -35,6 +35,7 @@ import MDInput from "components/MDInput";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import Logout from "components/profile";
 
 // Custom styles for DashboardNavbar
 import {
@@ -59,6 +60,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+
+  const [isLogoutOpen, setLogoutOpen] = useState(false);
+
+  const handleLogoutOpen = () => setLogoutOpen(true);
+  const handleLogoutClose = () => setLogoutOpen(false);
+
+  const handleLogoutConfirm = () => {
+    // Your logout logic here (e.g., clearing tokens, redirecting, etc.)
+    console.log("User logged out");
+    setLogoutOpen(false);
+  };
 
   useEffect(() => {
     // Setting the navbar type
@@ -135,12 +147,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
+            {/* <MDBox pr={1}>
               <MDInput label="Search here" />
-            </MDBox>
+            </MDBox> */}
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
+              <Link to="">
+                <IconButton
+                  onClick={handleLogoutOpen}
+                  sx={navbarIconButton}
+                  size="small"
+                  disableRipple
+                >
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
               </Link>
@@ -178,6 +195,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton>
               {renderMenu()}
             </MDBox>
+            <Logout
+              isOpen={isLogoutOpen}
+              onClose={handleLogoutClose}
+              onConfirm={handleLogoutConfirm}
+            />
           </MDBox>
         )}
       </Toolbar>
