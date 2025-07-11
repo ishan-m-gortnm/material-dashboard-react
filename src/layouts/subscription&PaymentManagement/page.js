@@ -789,7 +789,7 @@
 
 // export default ContactUs;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "examples/Tables/DataTable";
 import {
@@ -823,6 +823,7 @@ const ContactUs = () => {
   const [renewOpen, setRenewOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingToggleUser, setPendingToggleUser] = useState(null);
@@ -832,6 +833,8 @@ const ContactUs = () => {
     { Header: "Name", accessor: "name", align: "center" },
     { Header: "Phone", accessor: "phone", align: "center" },
     { Header: "Subscription", accessor: "subscription", align: "center" },
+    { Header: "Status", accessor: "status", align: "center" },
+
     { Header: "Action", accessor: "action", align: "center" },
   ];
 
@@ -882,13 +885,19 @@ const ContactUs = () => {
       setPendingToggleUser({ userId, currentStatus });
       setConfirmOpen(true);
     } else {
+      // return;
       toggleStatus(userId, currentStatus);
     }
   };
 
   const toggleStatus = async (userId, currentStatus) => {
     const token = localStorage.getItem("token");
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
+    // const newStatus = currentStatus === "active" ? "inactive" : "active";
+    console.log(currentStatus, "ishan");
+    if (currentStatus === "canceled") {
+      toast.error("Subscription is already canceled");
+      return;
+    }
 
     try {
       await axios.patch(
@@ -903,13 +912,17 @@ const ContactUs = () => {
           },
         }
       );
-      if (newStatus === "inactive") {
-        toast.success(`User marked as ${newStatus}`);
-      }
+      toast.success("Subscription canceled successfully");
+      // if (newStatus === "inactive") {
+      //   toast.success(`User marked as ${newStatus}`);
+      // }
       setReload(reload + 1);
     } catch (error) {
-      toast.error("Failed to update user status");
-      console.error("Toggle status failed:", error);
+      // toast.error("Failed to update user status");
+      // console.error("Toggle status failed:", error);
+      const apiMessage = error.response?.data?.message || "Failed to update user status";
+      toast.error(apiMessage);
+      console.error("API Error:", error);
     }
   };
 
@@ -921,6 +934,8 @@ const ContactUs = () => {
       const params = new URLSearchParams();
       if (pageSize) params.append("limit", pageSize);
       if (pageIndex) params.append("page", pageIndex);
+      if (searchQuery) params.append("search", searchQuery);
+
       url.search = params.toString();
 
       const response = await axios.get(url.toString(), {
@@ -938,6 +953,7 @@ const ContactUs = () => {
           name: <div>{user.details.name || "Na"}</div>,
           phone: <div>{user.mobileNumber}</div>,
           subscription: <div>{user?.subscription?.planType || "-"}</div>,
+          status: <div>{user?.subscription?.status || "-"}</div>,
           action: (
             <>
               <IconButton color="primary" onClick={() => handleRenewClick(user._id)}>
@@ -962,10 +978,13 @@ const ContactUs = () => {
       console.error("Error fetching users:", error);
     }
   };
-
+  useEffect(() => {
+    // fetchUsers();
+    setReload(reload + 1);
+  }, [searchQuery]);
   return (
     <DashboardLayout>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <Card sx={{ mt: 3 }}>
         <MDBox
           mx={2}
@@ -989,6 +1008,10 @@ const ContactUs = () => {
             showTotalEntries={true}
             fetchDataRows={fetchUsers}
             canSearch={true}
+            onSearch={(val) => {
+              setSearchQuery(val);
+              // setPage(0); // reset to first page on new search
+            }}
             noEndBorder
             reload={reload}
           />

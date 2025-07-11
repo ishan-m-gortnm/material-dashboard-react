@@ -4,8 +4,9 @@ const tabList = [
   { label: "User", key: "user" },
   { label: "Meal Logs", key: "meal" },
   { label: "Exercise Logs", key: "exercise" },
-  { label: "Progress History", key: "progress" },
-  { label: "Rating & Feedback", key: "feedback" },
+  { label: "DailyLog", key: "progress" },
+  // { label: "Rating & Feedback", key: "feedback" },
+  { label: "Physical Stats", key: "physicalStats" },
 ];
 
 const UserDetailTabs = ({ activeTab, setActiveTab }) => {

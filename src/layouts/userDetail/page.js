@@ -9,9 +9,11 @@ import MDTypography from "components/MDTypography";
 import UserDetailTabs from "components/UserDetailTab/page";
 import MealLogs from "components/MealLog/page";
 import ExerciseLogs from "components/ExerciseLog/page";
-import ProgressHistory from "components/progressHistory/page";
+import DailyLog from "components/DailyLog/page";
 import RatingFeedback from "components/RatingFeedback/page";
 import User from "components/userDetail/page";
+import PhysicalStats from "components/physicalStats/page";
+
 const UserDetailPage = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
@@ -66,6 +68,7 @@ const UserDetailPage = () => {
     { Header: "bmiCategory", accessor: "bmiCategory", align: "center" },
     { Header: "regDate", accessor: "regDate", align: "center" },
     { Header: "subscription", accessor: "subscription", align: "center" },
+
     { Header: "action", accessor: "action", align: "center" },
   ];
 
@@ -90,9 +93,11 @@ const UserDetailPage = () => {
       case "exercise":
         return <ExerciseLogs />;
       case "progress":
-        return <ProgressHistory />;
+        return <DailyLog />;
       case "feedback":
         return <RatingFeedback />;
+      case "physicalStats":
+        return <PhysicalStats />;
       default:
         return null;
     }

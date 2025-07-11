@@ -98,6 +98,8 @@ function Basic() {
 
   return (
     <BasicLayout image={bgImage}>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
+
       <Card>
         <MDBox
           variant="gradient"
