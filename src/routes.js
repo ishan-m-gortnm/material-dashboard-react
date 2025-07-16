@@ -55,6 +55,7 @@ import Icon from "@mui/material/Icon";
 import MealLogs from "components/MealLog/page";
 import CustomNotification from "layouts/customNotification/page";
 import ContactUs from "layouts/contact-Us/page";
+import ReferralCode from "layouts/referralCode/page";
 
 const routes = [
   {
@@ -129,6 +130,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/contact-us",
     component: <ContactUs />,
+  },
+  {
+    type: "collapse",
+    name: " ReferralCode",
+    key: "referralCode",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/referralCode",
+    component: <ReferralCode />,
   },
 
   // {

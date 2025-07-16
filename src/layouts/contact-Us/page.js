@@ -189,7 +189,7 @@ const ContactUs = () => {
             entriesPerPage={true}
             showTotalEntries={true}
             fetchDataRows={fetchUsers}
-            canSearch={true}
+            canSearch={false}
             noEndBorder
             reload={reload}
           />
