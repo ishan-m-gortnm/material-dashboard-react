@@ -461,6 +461,28 @@ const ReferralCode = () => {
     setStoryForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // const handleCreateStory = async () => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     await axios.post(
+  //       "https://api.qa.nutriverseai.in/api/v1/admin/special-user",
+  //       {
+  //         name: storyForm.userName,
+  //         specialUserType: storyForm.userProfile,
+  //         mobileNumber: storyForm.mobileNumber,
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  //     toast.success("Referral code created successfully");
+  //     setReload(reload + 1);
+  //     handleClose();
+  //   } catch (err) {
+  //     console.error("Referral creation failed:", err);
+  //     toast.error("Failed to create referral code");
+  //   }
+  // };
   const handleCreateStory = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -480,7 +502,14 @@ const ReferralCode = () => {
       handleClose();
     } catch (err) {
       console.error("Referral creation failed:", err);
-      toast.error("Failed to create referral code");
+
+      const errorMessage =
+        err?.response?.data?.message || // Most common
+        err?.response?.data?.error || // Some APIs use this
+        (Array.isArray(err?.response?.data?.errors) && err.response.data.errors[0]?.msg) || // If error is an array
+        "Failed to create referral code"; // Fallback message
+
+      toast.error(errorMessage);
     }
   };
 
@@ -492,7 +521,7 @@ const ReferralCode = () => {
         {
           name: storyForm.userName,
           specialUserType: storyForm.userProfile,
-          mobileNumber: storyForm.mobileNumber,
+          // mobileNumber: storyForm.mobileNumber,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -513,7 +542,7 @@ const ReferralCode = () => {
     setStoryForm({
       userName: story.details?.name || "",
       userProfile: story.specialUserType || "",
-      mobileNumber: story.mobileNumber || "",
+      // mobileNumber: story.mobileNumber || "",
     });
   };
 
@@ -565,13 +594,13 @@ const ReferralCode = () => {
         mobileNumber: <div>{user.mobileNumber}</div>,
 
         specialUserType: <div>{user.userProfile || user.specialUserType}</div>,
-        specialUserIndex: <div>{"1"}</div>,
+        specialUserIndex: <div>{user.referredUsersCount || 0}</div>,
         referCode: <div>{user.referCode}</div>,
         action: (
           <div>
-            {/* <IconButton color="secondary" onClick={() => handleEditPopup(user)}>
+            <IconButton color="secondary" onClick={() => handleEditPopup(user)}>
               <EditIcon />
-            </IconButton> */}
+            </IconButton>
             <IconButton color="error" onClick={() => handleDelete(user._id)}>
               <DeleteIcon />
             </IconButton>
@@ -616,11 +645,11 @@ const ReferralCode = () => {
             reload={reload}
             // canSearch={true}
             noEndBorder
-            // button={
-            //   <MDButton variant="gradient" color="info" onClick={() => setCreateDialogOpen(true)}>
-            //     Add Code
-            //   </MDButton>
-            // }
+            button={
+              <MDButton variant="gradient" color="info" onClick={() => setCreateDialogOpen(true)}>
+                Add Code
+              </MDButton>
+            }
           />
         </MDBox>
       </Card>
@@ -632,7 +661,9 @@ const ReferralCode = () => {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle>{editDialogOpen ? "Edit Referral Code" : "Create Referral Code"}</DialogTitle>
+        <DialogTitle sx={{ textAlign: "center" }}>
+          {editDialogOpen ? "Edit Referral Code" : "Create Referral Code"}
+        </DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
@@ -642,14 +673,17 @@ const ReferralCode = () => {
             value={storyForm.userName}
             onChange={handleInputChange}
           />
-          <TextField
-            fullWidth
-            margin="normal"
-            name="mobileNumber"
-            label="Mobile Number"
-            value={storyForm.mobileNumber}
-            onChange={handleInputChange}
-          />
+          {!editDialogOpen && (
+            <TextField
+              fullWidth
+              margin="normal"
+              name="mobileNumber"
+              label="Mobile Number"
+              value={storyForm.mobileNumber}
+              onChange={handleInputChange}
+            />
+          )}
+
           <FormControl fullWidth margin="normal">
             <InputLabel id="user-profile-label">User Profile</InputLabel>
             <Select
@@ -661,9 +695,9 @@ const ReferralCode = () => {
               sx={{ height: "45px" }}
               IconComponent={ArrowDropDownIcon}
             >
-              <MenuItem value="Doctor">Doctor</MenuItem>
-              <MenuItem value="Influencer">Influencer</MenuItem>
-              <MenuItem value="Fitness Coach">Fitness Coach</MenuItem>
+              <MenuItem value="doctor">Doctor</MenuItem>
+              <MenuItem value="influencer">Influencer</MenuItem>
+              <MenuItem value="fitness-coach">Fitness Coach</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
