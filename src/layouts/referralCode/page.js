@@ -590,7 +590,7 @@ const ReferralCode = () => {
       const formattedRows = users.map((user, index) => ({
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
         createdAt: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
-        name: <div>{user.userName || user.details?.name}</div>,
+        name: <a href={`/referral/${user._id}`}>{user.userName || user.details?.name}</a>,
         mobileNumber: <div>{user.mobileNumber}</div>,
 
         specialUserType: <div>{user.userProfile || user.specialUserType}</div>,

@@ -56,6 +56,7 @@ import MealLogs from "components/MealLog/page";
 import CustomNotification from "layouts/customNotification/page";
 import ContactUs from "layouts/contact-Us/page";
 import ReferralCode from "layouts/referralCode/page";
+import ReferralDetails from "layouts/referralDetails/page";
 
 const routes = [
   {
@@ -90,6 +91,13 @@ const routes = [
     route: "/user/:id",
     component: <UserDetail />,
   },
+  {
+    name: "Recommendation Detail",
+    key: "referralDetail",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/referral/:id",
+    component: <ReferralDetails />,
+  },
   // {
   //   type: "collapse",
   //   name: " Nutrition Database",
@@ -111,7 +119,7 @@ const routes = [
     type: "collapse",
     name: " Admin Story Management",
     key: "adminStoryManagement",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">movie</Icon>,
     route: "/story",
     component: <AdminManagement />,
   },
@@ -119,7 +127,7 @@ const routes = [
     type: "collapse",
     name: " Custom Notification",
     key: "customNotification",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notification",
     component: <CustomNotification />,
   },
@@ -127,7 +135,7 @@ const routes = [
     type: "collapse",
     name: " Contact-Us",
     key: "contactUs",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">contact_page</Icon>,
     route: "/contact-us",
     component: <ContactUs />,
   },
@@ -135,7 +143,7 @@ const routes = [
     type: "collapse",
     name: " ReferralCode",
     key: "referralCode",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">group</Icon>,
     route: "/referralCode",
     component: <ReferralCode />,
   },
