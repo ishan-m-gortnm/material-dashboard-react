@@ -49,7 +49,7 @@ const ContactUs = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.qa.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
+      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -91,7 +91,7 @@ const ContactUs = () => {
       //     },
       //   }
       // );
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/contact-us");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/contact-us");
 
       const params = new URLSearchParams();
 
@@ -109,7 +109,7 @@ const ContactUs = () => {
       const users = response.data?.data.data || [];
 
       const formattedRows = users.map((user, index) => ({
-        sno: <div>{index + 1}</div>,
+        sno: <div>{pageSize * pageIndex + index + 1}</div>,
         createdAt: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
         firstName: <div>{user.firstName}</div>,
         lastName: <div>{user.lastName}</div>,

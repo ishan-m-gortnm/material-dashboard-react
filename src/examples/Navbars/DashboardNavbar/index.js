@@ -27,6 +27,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -100,6 +101,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleCloseConfigurator = () => setOpenConfigurator(dispatch, false);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
@@ -172,15 +174,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
               </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
+              <ClickAwayListener onClickAway={handleCloseConfigurator}>
+                <div style={{ display: "inline-block" }}>
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarIconButton}
+                    onClick={handleConfiguratorOpen}
+                  >
+                    <Icon sx={iconsStyle}>settings</Icon>
+                  </IconButton>
+                </div>
+              </ClickAwayListener>
               {/* <IconButton
                 size="small"
                 disableRipple

@@ -588,7 +588,7 @@ const StoryManagement = () => {
     try {
       setUploading(true);
       const res = await axios.post(
-        "https://api.qa.nutriverseai.in/api/v1/admin/story/upload",
+        "https://api.nutriverseai.in/api/v1/admin/story/upload",
         formData,
         {
           headers: {
@@ -612,7 +612,7 @@ const StoryManagement = () => {
 
     try {
       await axios.post(
-        "https://api.qa.nutriverseai.in/api/v1/admin/story",
+        "https://api.nutriverseai.in/api/v1/admin/story",
         {
           text: storyForm.text.length > 0 ? storyForm.text : undefined,
           type: storyForm.type,
@@ -638,7 +638,7 @@ const StoryManagement = () => {
 
     try {
       await axios.patch(
-        `https://api.qa.nutriverseai.in/api/v1/admin/story/${editStoryId}`,
+        `https://api.nutriverseai.in/api/v1/admin/story/${editStoryId}`,
         {
           text: storyForm.text,
           type: storyForm.type,
@@ -677,7 +677,7 @@ const StoryManagement = () => {
   const confirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.qa.nutriverseai.in/api/v1/admin/story/${storyToDelete}`, {
+      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/story/${storyToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -695,8 +695,8 @@ const StoryManagement = () => {
   const onsubmit = async () => {
     const url =
       user.isDisabled === true
-        ? `https://api.qa.nutriverseai.in/api/v1/admin/story/${user._id}/enable`
-        : `https://api.qa.nutriverseai.in/api/v1/admin/story/${user._id}/disable`;
+        ? `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/enable`
+        : `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/disable`;
 
     try {
       const token = localStorage.getItem("token");
@@ -712,7 +712,7 @@ const StoryManagement = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/story");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/story");
       const params = new URLSearchParams();
 
       if (pageSize) params.append("limit", pageSize);

@@ -487,7 +487,7 @@ const ReferralCode = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.post(
-        "https://api.qa.nutriverseai.in/api/v1/admin/special-user",
+        "https://api.nutriverseai.in/api/v1/admin/special-user",
         {
           name: storyForm.userName,
           specialUserType: storyForm.userProfile,
@@ -517,7 +517,7 @@ const ReferralCode = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.patch(
-        `https://api.qa.nutriverseai.in/api/v1/admin/special-user/${editStoryId}`,
+        `https://api.nutriverseai.in/api/v1/admin/special-user/${editStoryId}`,
         {
           name: storyForm.userName,
           specialUserType: storyForm.userProfile,
@@ -555,7 +555,7 @@ const ReferralCode = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.patch(
-        `https://api.qa.nutriverseai.in/api/v1/admin/special-user/${storyToDelete}/disable`,
+        `https://api.nutriverseai.in/api/v1/admin/special-user/${storyToDelete}/disable`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -574,7 +574,7 @@ const ReferralCode = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/special-user");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/special-user");
       const params = new URLSearchParams();
 
       if (pageSize) params.append("limit", pageSize);

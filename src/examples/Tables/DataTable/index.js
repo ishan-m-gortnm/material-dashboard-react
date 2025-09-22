@@ -548,9 +548,259 @@
 
 // export default DataTable;
 
+// import { useMemo, useEffect, useState } from "react";
+// import PropTypes from "prop-types";
+// import { useTable, useGlobalFilter, useSortBy } from "react-table";
+
+// // MUI
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableRow from "@mui/material/TableRow";
+// import Icon from "@mui/material/Icon";
+// import Autocomplete from "@mui/material/Autocomplete";
+
+// // Custom components
+// import MDBox from "components/MDBox";
+// import MDTypography from "components/MDTypography";
+// import MDInput from "components/MDInput";
+// import MDPagination from "components/MDPagination";
+// import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
+// import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+// import { useAsyncDebounce } from "react-table";
+
+// function DataTable({
+//   entriesPerPage,
+//   canSearch,
+//   showTotalEntries,
+//   table,
+//   pagination,
+//   button,
+//   isSorted,
+//   noEndBorder,
+//   fetchDataRows,
+//   reload,
+//   onSearch,
+// }) {
+//   const defaultPageSize = entriesPerPage.defaultValue || 10;
+//   const entries = entriesPerPage.entries?.map((e) => e.toString()) || ["5", "10", "15", "20", "25"];
+
+//   const columns = useMemo(() => table.columns, [table]);
+//   const [data, setData] = useState([]);
+//   const [totalCount, setTotalCount] = useState(0);
+//   const [pageIndex, setPageIndex] = useState(0);
+//   const [pageSize, setPageSize] = useState(defaultPageSize);
+//   const [globalFilter, setGlobalFilter] = useState("");
+
+//   const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } = useTable(
+//     {
+//       columns,
+//       data,
+//       manualPagination: true,
+//       manualGlobalFilter: true,
+//       pageCount: Math.ceil(totalCount / pageSize),
+//     },
+//     useGlobalFilter,
+//     useSortBy
+//   );
+
+//   const fetchData = async () => {
+//     const result = await fetchDataRows({ pageIndex, pageSize, globalFilter });
+//     if (result && Array.isArray(result.data)) {
+//       setData(result.data);
+//       setTotalCount(result.total || 0);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchData();
+//   }, [pageIndex, pageSize, globalFilter, reload]);
+
+//   const onSearchChange = useAsyncDebounce((value) => {
+//     setGlobalFilter(value);
+//     setPageIndex(0); // Reset to page 1
+//     onSearch?.(value);
+//   }, 300);
+
+//   const [search, setSearch] = useState(globalFilter);
+
+//   const entriesStart = totalCount === 0 ? 0 : pageIndex * pageSize + 1;
+//   const entriesEnd = Math.min((pageIndex + 1) * pageSize, totalCount);
+//   const totalPages = Math.ceil(totalCount / pageSize);
+
+//   const paginationButtons = Array.from({ length: totalPages }, (_, i) => (
+//     <MDPagination item key={i} onClick={() => setPageIndex(i)} active={pageIndex === i}>
+//       {i + 1}
+//     </MDPagination>
+//   ));
+
+//   return (
+//     <TableContainer sx={{ boxShadow: "none" }}>
+//       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+//         {button}
+//         {canSearch && (
+//           <MDBox width="12rem" ml="auto">
+//             <MDInput
+//               placeholder="Search..."
+//               value={search}
+//               size="small"
+//               fullWidth
+//               onChange={({ currentTarget }) => {
+//                 setSearch(currentTarget.value);
+//                 onSearchChange(currentTarget.value);
+//               }}
+//             />
+//           </MDBox>
+//         )}
+//       </MDBox>
+
+//       <Table {...getTableProps()}>
+//         <MDBox component="thead">
+//           {headerGroups.map((headerGroup, key) => (
+//             <TableRow key={key} {...headerGroup.getHeaderGroupProps()}>
+//               {headerGroup.headers.map((column, idx) => (
+//                 <DataTableHeadCell
+//                   key={idx}
+//                   {...column.getHeaderProps(isSorted && column.getSortByToggleProps())}
+//                   width={column.width || "auto"}
+//                   align={column.align || "left"}
+//                   sorted={
+//                     isSorted && column.isSorted ? (column.isSortedDesc ? "desc" : "asce") : "none"
+//                   }
+//                 >
+//                   {column.render("Header")}
+//                 </DataTableHeadCell>
+//               ))}
+//             </TableRow>
+//           ))}
+//         </MDBox>
+//         <TableBody {...getTableBodyProps()}>
+//           {rows.map((row, key) => {
+//             prepareRow(row);
+//             return (
+//               <TableRow key={key} {...row.getRowProps()}>
+//                 {row.cells.map((cell, idx) => (
+//                   <DataTableBodyCell
+//                     key={idx}
+//                     noBorder={noEndBorder && rows.length - 1 === key}
+//                     align={cell.column.align || "left"}
+//                     {...cell.getCellProps()}
+//                   >
+//                     {cell.render("Cell")}
+//                   </DataTableBodyCell>
+//                 ))}
+//               </TableRow>
+//             );
+//           })}
+//         </TableBody>
+//       </Table>
+
+//       <MDBox
+//         display="flex"
+//         flexDirection={{ xs: "column", sm: "row" }}
+//         justifyContent="space-between"
+//         alignItems={{ xs: "flex-start", sm: "center" }}
+//         p={3}
+//       >
+//         {showTotalEntries && (
+//           <MDBox mb={{ xs: 3, sm: 0 }}>
+//             <MDTypography variant="button" color="secondary" fontWeight="regular">
+//               Showing {entriesStart} to {entriesEnd} of {totalCount} entries
+//             </MDTypography>
+//           </MDBox>
+//         )}
+
+//         {totalPages > 1 && (
+//           <MDPagination
+//             variant={pagination?.variant || "gradient"}
+//             color={pagination?.color || "info"}
+//           >
+//             {pageIndex > 0 && (
+//               <MDPagination item onClick={() => setPageIndex(pageIndex - 1)}>
+//                 <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
+//               </MDPagination>
+//             )}
+//             {paginationButtons}
+//             {pageIndex < totalPages - 1 && (
+//               <MDPagination item onClick={() => setPageIndex(pageIndex + 1)}>
+//                 <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
+//               </MDPagination>
+//             )}
+//           </MDPagination>
+//         )}
+
+//         {entriesPerPage && (
+//           <MDBox display="flex" alignItems="center">
+//             <Autocomplete
+//               disableClearable
+//               value={pageSize.toString()}
+//               options={entries}
+//               onChange={(event, newValue) => {
+//                 setPageSize(parseInt(newValue, 10));
+//                 setPageIndex(0); // Reset to first page on pageSize change
+//               }}
+//               size="small"
+//               sx={{ width: "5rem" }}
+//               renderInput={(params) => <MDInput {...params} />}
+//             />
+//             <MDTypography variant="caption" color="secondary">
+//               &nbsp;&nbsp;entries per page
+//             </MDTypography>
+//           </MDBox>
+//         )}
+//       </MDBox>
+//     </TableContainer>
+//   );
+// }
+
+// // Default Props
+// DataTable.defaultProps = {
+//   entriesPerPage: { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
+//   canSearch: false,
+//   showTotalEntries: true,
+//   pagination: { variant: "gradient", color: "info" },
+//   isSorted: true,
+//   noEndBorder: false,
+//   button: null,
+// };
+
+// // Prop Types
+// DataTable.propTypes = {
+//   entriesPerPage: PropTypes.shape({
+//     defaultValue: PropTypes.number,
+//     entries: PropTypes.arrayOf(PropTypes.number),
+//   }),
+//   canSearch: PropTypes.bool,
+//   showTotalEntries: PropTypes.bool,
+//   table: PropTypes.shape({
+//     columns: PropTypes.array.isRequired,
+//     rows: PropTypes.array,
+//   }).isRequired,
+//   pagination: PropTypes.shape({
+//     variant: PropTypes.oneOf(["contained", "gradient"]),
+//     color: PropTypes.oneOf([
+//       "primary",
+//       "secondary",
+//       "info",
+//       "success",
+//       "warning",
+//       "error",
+//       "dark",
+//       "light",
+//     ]),
+//   }),
+//   isSorted: PropTypes.bool,
+//   noEndBorder: PropTypes.bool,
+//   button: PropTypes.element,
+//   fetchDataRows: PropTypes.func.isRequired,
+//   onSearch: PropTypes.func,
+// };
+
+// export default DataTable;
+
 import { useMemo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useTable, useGlobalFilter, useSortBy } from "react-table";
+import { useTable, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
 
 // MUI
 import Table from "@mui/material/Table";
@@ -567,7 +817,6 @@ import MDInput from "components/MDInput";
 import MDPagination from "components/MDPagination";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
-import { useAsyncDebounce } from "react-table";
 
 function DataTable({
   entriesPerPage,
@@ -628,11 +877,79 @@ function DataTable({
   const entriesEnd = Math.min((pageIndex + 1) * pageSize, totalCount);
   const totalPages = Math.ceil(totalCount / pageSize);
 
-  const paginationButtons = Array.from({ length: totalPages }, (_, i) => (
-    <MDPagination item key={i} onClick={() => setPageIndex(i)} active={pageIndex === i}>
-      {i + 1}
-    </MDPagination>
-  ));
+  // Ellipsis pagination function
+  const renderPagination = () => {
+    const items = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 0; i < totalPages; i++) {
+        items.push(
+          <MDPagination item key={i} onClick={() => setPageIndex(i)} active={pageIndex === i}>
+            {i + 1}
+          </MDPagination>
+        );
+      }
+    } else {
+      // Always show first page
+      items.push(
+        <MDPagination item key={0} onClick={() => setPageIndex(0)} active={pageIndex === 0}>
+          1
+        </MDPagination>
+      );
+
+      // Left ellipsis
+      if (pageIndex > 2) {
+        items.push(
+          <MDPagination key="start-ellipsis" item disabled>
+            ...
+          </MDPagination>
+          // <MDTypography
+          //   key="start-ellipsis"
+          //   variant="button"
+          //   color="secondary"
+          //   sx={{ mx: 1 }} // spacing between items
+          // >
+          //   ...
+          // </MDTypography>
+        );
+      }
+
+      // Middle pages (current ±1)
+      const start = Math.max(1, pageIndex - 1);
+      const end = Math.min(totalPages - 2, pageIndex + 1);
+      for (let i = start; i <= end; i++) {
+        items.push(
+          <MDPagination item key={i} onClick={() => setPageIndex(i)} active={pageIndex === i}>
+            {i + 1}
+          </MDPagination>
+        );
+      }
+
+      // Right ellipsis
+      if (pageIndex < totalPages - 3) {
+        items.push(
+          <MDPagination key="end-ellipsis" item disabled>
+            ...
+          </MDPagination>
+        );
+      }
+
+      // Always show last page
+      items.push(
+        <MDPagination
+          item
+          key={totalPages - 1}
+          onClick={() => setPageIndex(totalPages - 1)}
+          active={pageIndex === totalPages - 1}
+        >
+          {totalPages}
+        </MDPagination>
+      );
+    }
+
+    return items;
+  };
 
   return (
     <TableContainer sx={{ boxShadow: "none" }}>
@@ -720,7 +1037,9 @@ function DataTable({
                 <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
               </MDPagination>
             )}
-            {paginationButtons}
+
+            {renderPagination()}
+
             {pageIndex < totalPages - 1 && (
               <MDPagination item onClick={() => setPageIndex(pageIndex + 1)}>
                 <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
