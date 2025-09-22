@@ -23,7 +23,7 @@ const UserDetailPage = () => {
   const fetchUserDetail = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`https://api.qa.nutriverseai.in/api/v1/admin/user/${id}`, {
+      const response = await axios.get(`https://api.nutriverseai.in/api/v1/admin/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

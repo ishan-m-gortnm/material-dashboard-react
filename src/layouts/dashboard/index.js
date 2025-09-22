@@ -32,10 +32,10 @@ function Dashboard() {
         const token = localStorage.getItem("token");
 
         const [userStatsRes, contactUsRes] = await Promise.all([
-          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/stats/dashboard", {
+          axios.get("https://api.nutriverseai.in/api/v1/admin/stats/dashboard", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/contact-us?limit=1", {
+          axios.get("https://api.nutriverseai.in/api/v1/admin/contact-us?limit=1", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -54,7 +54,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://api.qa.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
+        `https://api.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -148,6 +148,79 @@ function Dashboard() {
             </MDBox>
           </Grid>
 
+          {/* <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Non-Subscribed Users"
+                count={stats.nonSubscribed}
+              />
+            </MDBox>
+          </Grid> */}
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="weekend"
+                title="Free Users"
+                count={stats.freeUsers}
+              />
+            </MDBox>
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Monthly Users"
+                count={stats.monthlyUsers}
+              />
+            </MDBox>
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Yearly Users"
+                count={stats.yearlyUsers}
+              />
+            </MDBox>
+          </Grid>
+
+          {/* <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Free Users with Zero Credits"
+                count={stats.freeUsersWithZeroCredits}
+              />
+            </MDBox>
+          </Grid> */}
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Marked for Deletion"
+                count={stats.markedForDeletion}
+              />
+            </MDBox>
+          </Grid>
+          {/* <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Marked for Deletion"
+                count={stats.markedForDeletion}
+              />
+            </MDBox>
+          </Grid> */}
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
@@ -155,6 +228,16 @@ function Dashboard() {
                 icon="person_off"
                 title="Non-Subscribed Users"
                 count={stats.nonSubscribed}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="info"
+                icon="person_off"
+                title="Free Users with Zero Credits"
+                count={stats.freeUsersWithZeroCredits}
               />
             </MDBox>
           </Grid>
