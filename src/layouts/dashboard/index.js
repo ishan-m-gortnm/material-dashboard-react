@@ -32,10 +32,10 @@ function Dashboard() {
         const token = localStorage.getItem("token");
 
         const [userStatsRes, contactUsRes] = await Promise.all([
-          axios.get("https://api.nutriverseai.in/api/v1/admin/stats/dashboard", {
+          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/stats/dashboard", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://api.nutriverseai.in/api/v1/admin/contact-us?limit=1", {
+          axios.get("https://api.qa.nutriverseai.in/api/v1/admin/contact-us?limit=1", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -54,7 +54,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://api.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
+        `https://api.qa.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

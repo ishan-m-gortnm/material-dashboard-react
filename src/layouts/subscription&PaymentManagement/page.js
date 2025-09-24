@@ -859,7 +859,7 @@ const ContactUs = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.patch(
-        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+        "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
         {
           status: "renew",
           userId: selectedUserId,
@@ -901,7 +901,7 @@ const ContactUs = () => {
 
     try {
       await axios.patch(
-        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+        "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
         {
           status: "cancel",
           userId: userId,
@@ -929,7 +929,7 @@ const ContactUs = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
 
       const params = new URLSearchParams();
       if (pageSize) params.append("limit", pageSize);

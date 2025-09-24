@@ -104,7 +104,7 @@ const UserManagement = () => {
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
 
       const params = new URLSearchParams();
       if (goalFilter) params.append("goal", goalFilter);
@@ -187,8 +187,8 @@ const UserManagement = () => {
     // Mapping status to Block and Unblock (1 = Block, 2 = Unblock)
     const url =
       user.isDisabled === true
-        ? `https://api.nutriverseai.in/api/v1/admin/user/${user._id}/enable`
-        : `https://api.nutriverseai.in/api/v1/admin/user/${user._id}/disable`;
+        ? `https://api.qa.nutriverseai.in/api/v1/admin/user/${user._id}/enable`
+        : `https://api.qa.nutriverseai.in/api/v1/admin/user/${user._id}/disable`;
 
     try {
       const token = localStorage.getItem("token");

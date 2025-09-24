@@ -42,7 +42,7 @@ const PhysicalStats = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
+      await axios.delete(`https://api.qa.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +66,7 @@ const PhysicalStats = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/physical-stat");
+      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/physical-stat");
 
       const params = new URLSearchParams();
 

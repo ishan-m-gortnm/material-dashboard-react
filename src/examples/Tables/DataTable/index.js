@@ -991,7 +991,7 @@ function DataTable({
             </TableRow>
           ))}
         </MDBox>
-        <TableBody {...getTableBodyProps()}>
+        {/* <TableBody {...getTableBodyProps()}>
           {rows.map((row, key) => {
             prepareRow(row);
             return (
@@ -1009,6 +1009,37 @@ function DataTable({
               </TableRow>
             );
           })}
+        </TableBody> */}
+        <TableBody {...getTableBodyProps()}>
+          {rows.length > 0 ? (
+            rows.map((row, key) => {
+              prepareRow(row);
+              return (
+                <TableRow key={key} {...row.getRowProps()}>
+                  {row.cells.map((cell, idx) => (
+                    <DataTableBodyCell
+                      key={idx}
+                      noBorder={noEndBorder && rows.length - 1 === key}
+                      align={cell.column.align || "left"}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </DataTableBodyCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <DataTableBodyCell
+                colSpan={headerGroups[0]?.headers?.length || 1}
+                align="center"
+                sx={{ py: 4, textAlign: "center" }}
+              >
+                <strong>No data available</strong>
+              </DataTableBodyCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
 

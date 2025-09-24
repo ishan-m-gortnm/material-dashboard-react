@@ -93,7 +93,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
     try {
       const token = localStorage.getItem("token"); // or wherever you're storing it
       const response = await axios.patch(
-        "https://api.nutriverseai.in/api/v1/admin/profile/self",
+        "https://api.qa.nutriverseai.in/api/v1/admin/profile/self",
         { password },
         {
           headers: {

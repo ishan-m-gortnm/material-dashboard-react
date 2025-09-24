@@ -383,7 +383,9 @@ const UserManagement = () => {
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL(`https://api.nutriverseai.in/api/v1/admin/special-user/${id}/referred`);
+      const url = new URL(
+        `https://api.qa.nutriverseai.in/api/v1/admin/special-user/${id}/referred`
+      );
 
       const params = new URLSearchParams();
       if (month) params.append("month", month);
