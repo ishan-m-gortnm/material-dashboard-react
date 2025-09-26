@@ -42,7 +42,7 @@ const PhysicalStats = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.qa.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
+      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,12 +61,15 @@ const PhysicalStats = () => {
     setConfirmOpen(false);
     setLogToDelete(null);
   };
-
+  const poundsToKg = (lbs) => {
+    if (!lbs || isNaN(lbs)) return "N/A";
+    return (lbs * 0.453592).toFixed(2);
+  };
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
       const token = localStorage.getItem("token");
 
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/physical-stat");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/physical-stat");
 
       const params = new URLSearchParams();
 
@@ -98,7 +101,8 @@ const PhysicalStats = () => {
         // metric: <div>{user.metric}</div>,
         weight: (
           <div>
-            {user.weight.pounds} lbs ({user.weight.grams / 1000} kg)
+            {/* {user.weight.pounds} lbs ({user.weight.grams / 1000} kg) */}
+            {user.weight?.pounds ?? "N/A"} lbs ({poundsToKg(user.weight?.pounds)} kg){" "}
           </div>
         ),
       }));

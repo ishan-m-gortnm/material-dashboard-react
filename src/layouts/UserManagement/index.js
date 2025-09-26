@@ -52,6 +52,16 @@ const UserManagement = () => {
     { Header: "bmi", accessor: "bmiCategory", align: "center" },
     { Header: "reg Date", accessor: "regDate", align: "center" },
     { Header: "subscription", accessor: "subscription", align: "center" },
+    { Header: "status", accessor: "status", align: "center" },
+    { Header: "added By", accessor: "addedBy", align: "center" },
+
+    { Header: "purchase Date", accessor: "purchaseDate", align: "center" },
+
+    { Header: "amount Paid", accessor: "amountPaid", align: "center" },
+    { Header: "amount Refunded", accessor: "amountRefunded", align: "center" },
+    { Header: "isDisabled", accessor: "isDisabled", align: "center" },
+    { Header: "deletionRequestedAt", accessor: "deletionRequestedAt", align: "center" },
+
     { Header: "action", accessor: "action", align: "center" },
   ];
 
@@ -104,7 +114,7 @@ const UserManagement = () => {
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
 
       const params = new URLSearchParams();
       if (goalFilter) params.append("goal", goalFilter);
@@ -133,6 +143,26 @@ const UserManagement = () => {
         diet: <div>{user.details.diet || "-"}</div>,
         phone: <div>{user.mobileNumber || "-"}</div>,
         subscription: <div>{user?.subscription?.planType || "-"}</div>,
+        status: <div>{user?.subscription?.status || "-"}</div>,
+        addedBy: <div>{user?.subscription?.addedBy || "-"}</div>,
+        amountPaid: <div>{user?.subscription?.amountPaid || "0"}</div>,
+        amountRefunded: <div>{user?.subscription?.amountRefunded || "0"}</div>,
+        isDisabled: <div>{user?.isDisabled ? "Yes" : "No"}</div>,
+        deletionRequestedAt: (
+          <div>
+            {user?.deletionRequestedAt
+              ? new Date(user.deletionRequestedAt).toLocaleDateString("en-GB")
+              : "-"}
+          </div>
+        ),
+
+        purchaseDate: (
+          <div>
+            {user?.subscription?.purchaseDate
+              ? new Date(user.subscription.purchaseDate).toLocaleDateString("en-GB")
+              : "-"}
+          </div>
+        ),
         bmiCategory: <div>{user.details?.bmi?.toFixed(3) || "-"}</div>,
         regDate: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
         action: (
@@ -187,8 +217,8 @@ const UserManagement = () => {
     // Mapping status to Block and Unblock (1 = Block, 2 = Unblock)
     const url =
       user.isDisabled === true
-        ? `https://api.qa.nutriverseai.in/api/v1/admin/user/${user._id}/enable`
-        : `https://api.qa.nutriverseai.in/api/v1/admin/user/${user._id}/disable`;
+        ? `https://api.nutriverseai.in/api/v1/admin/user/${user._id}/enable`
+        : `https://api.nutriverseai.in/api/v1/admin/user/${user._id}/disable`;
 
     try {
       const token = localStorage.getItem("token");
@@ -256,7 +286,7 @@ const UserManagement = () => {
             marginBottom: "10px",
           }}
         >
-          <Dropdown options={goals} onChange={handlegoalFilter} label="Goal" />
+          <Dropdown options={goals} onChange={handlegoalFilter} label="Select Goal" />
         </Box>
         <Box
           sx={{
@@ -271,7 +301,7 @@ const UserManagement = () => {
           <Dropdown
             options={genderOptions}
             onChange={handlegenderFilter}
-            label="Gender"
+            label="Select Gender"
             // IconComponent={ArrowDropDownIcon}
           />
         </Box>
@@ -285,7 +315,7 @@ const UserManagement = () => {
             marginBottom: "10px",
           }}
         >
-          <Dropdown options={dietOptions} onChange={handledietFilter} label="Diet" />
+          <Dropdown options={dietOptions} onChange={handledietFilter} label=" Select Diet" />
         </Box>
         <Box
           sx={{
@@ -297,7 +327,7 @@ const UserManagement = () => {
             marginBottom: "10px",
           }}
         >
-          <Dropdown options={bmiOptions} onChange={handlebmiFilter} label="BMI" />
+          <Dropdown options={bmiOptions} onChange={handlebmiFilter} label="Select BMI" />
         </Box>
       </Box>
       <Card sx={{ mt: 5 }}>

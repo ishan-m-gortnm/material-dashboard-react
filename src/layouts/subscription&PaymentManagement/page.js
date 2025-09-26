@@ -45,7 +45,7 @@
 //   const handleConfirmDelete = async () => {
 //     const token = localStorage.getItem("token");
 //     try {
-//       await axios.delete(`https://api.qa.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
+//       await axios.delete(`https://api.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
 //         headers: {
 //           Authorization: `Bearer ${token}`,
 //         },
@@ -80,14 +80,14 @@
 //     try {
 //       const token = localStorage.getItem("token");
 //       // const response = await axios.get(
-//       //   "https://api.qa.nutriverseai.in/api/v1/admin/contact-us/?page=0&limit=10",
+//       //   "https://api.nutriverseai.in/api/v1/admin/contact-us/?page=0&limit=10",
 //       //   {
 //       //     headers: {
 //       //       Authorization: `Bearer ${token}`,
 //       //     },
 //       //   }
 //       // );
-//       const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 
@@ -261,7 +261,7 @@
 //     console.log(token, "ishan");
 //     try {
 //       await axios.patch(
-//         `https://api.qa.nutriverseai.in/api/v1/admin/subscription/status`,
+//         `https://api.nutriverseai.in/api/v1/admin/subscription/status`,
 //         {
 //           status: "cancel",
 //           userId: selectedUserId,
@@ -308,7 +308,7 @@
 //     const token = localStorage.getItem("token");
 //     try {
 //       await axios.patch(
-//         "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
+//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
 //         {
 //           status: "renew",
 //           userId: selectedUserId,
@@ -332,7 +332,7 @@
 //   const fetchUsers = async ({ pageIndex, pageSize }) => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 //       if (pageSize) params.append("limit", pageSize);
@@ -570,7 +570,7 @@
 //     const token = localStorage.getItem("token");
 //     try {
 //       await axios.patch(
-//         "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
+//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
 //         {
 //           status: "renew",
 //           userId: selectedUserId,
@@ -597,7 +597,7 @@
 
 //     try {
 //       await axios.patch(
-//         "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
+//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
 //         {
 //           status: "cancel",
 //           userId: userId,
@@ -619,7 +619,7 @@
 //   const fetchUsers = async ({ pageIndex, pageSize }) => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 //       if (pageSize) params.append("limit", pageSize);
@@ -834,7 +834,12 @@ const ContactUs = () => {
     { Header: "Phone", accessor: "phone", align: "center" },
     { Header: "Subscription", accessor: "subscription", align: "center" },
     { Header: "Status", accessor: "status", align: "center" },
+    { Header: "added By", accessor: "addedBy", align: "center" },
 
+    { Header: "purchase Date", accessor: "purchaseDate", align: "center" },
+
+    { Header: "amount Paid", accessor: "amountPaid", align: "center" },
+    { Header: "amount Refunded", accessor: "amountRefunded", align: "center" },
     { Header: "Action", accessor: "action", align: "center" },
   ];
 
@@ -859,7 +864,7 @@ const ContactUs = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.patch(
-        "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
+        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
         {
           status: "renew",
           userId: selectedUserId,
@@ -901,7 +906,7 @@ const ContactUs = () => {
 
     try {
       await axios.patch(
-        "https://api.qa.nutriverseai.in/api/v1/admin/subscription/status",
+        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
         {
           status: "cancel",
           userId: userId,
@@ -929,7 +934,7 @@ const ContactUs = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.qa.nutriverseai.in/api/v1/admin/user");
+      const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
 
       const params = new URLSearchParams();
       if (pageSize) params.append("limit", pageSize);
@@ -954,6 +959,19 @@ const ContactUs = () => {
           phone: <div>{user.mobileNumber}</div>,
           subscription: <div>{user?.subscription?.planType || "-"}</div>,
           status: <div>{user?.subscription?.status || "-"}</div>,
+          addedBy: <div>{user?.subscription?.addedBy || "-"}</div>,
+
+          purchaseDate: (
+            <div>
+              {" "}
+              {user?.subscription?.purchaseDate
+                ? new Date(user.subscription.purchaseDate).toLocaleDateString("en-GB")
+                : "-"}
+            </div>
+          ),
+          amountPaid: <div>{user?.subscription?.amountPaid || "0"}</div>,
+          amountRefunded: <div>{user?.subscription?.amountRefunded || "0"}</div>,
+
           action: (
             <>
               <IconButton color="primary" onClick={() => handleRenewClick(user._id)}>

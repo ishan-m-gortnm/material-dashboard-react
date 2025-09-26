@@ -3,7 +3,10 @@ import { Box, Typography, Grid, Paper, Divider } from "@mui/material";
 
 const UserDetail = ({ user }) => {
   const { details, mobileNumber } = user;
-
+  const poundsToKg = (lbs) => {
+    if (!lbs || isNaN(lbs)) return "N/A";
+    return (lbs * 0.453592).toFixed(2);
+  };
   return (
     <Box sx={{ p: 4, mx: "auto" }}>
       <Grid container spacing={3}>
@@ -39,12 +42,15 @@ const UserDetail = ({ user }) => {
               {details.height?.centimeters} cm)
             </Typography>
             <Typography>
-              <strong>Weight:</strong> {details.weight?.pounds} lbs ({details.weight?.grams / 1000}{" "}
-              kg)
+              <strong>Weight:</strong>
+              {/* {details.weight?.pounds} lbs ({details.weight?.grams / 1000} kg) */}
+              {details.weight?.pounds ?? "N/A"} lbs ({poundsToKg(details.weight?.pounds)} kg){" "}
             </Typography>
             <Typography>
-              <strong>Desired Weight:</strong> {details.desiredWeight?.pounds} lbs (
-              {details.desiredWeight?.grams / 1000} kg)
+              <strong>Desired Weight:</strong>
+              {/* {details.desiredWeight?.pounds} lbs ({details.desiredWeight?.grams / 1000} kg) */}
+              {details.desiredWeight?.pounds ?? "N/A"} lbs (
+              {poundsToKg(details.desiredWeight?.pounds)} kg){" "}
             </Typography>
             <Typography>
               <strong>Metric:</strong> {details.metric}

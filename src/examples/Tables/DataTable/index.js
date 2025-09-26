@@ -817,6 +817,7 @@ import MDInput from "components/MDInput";
 import MDPagination from "components/MDPagination";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+import CircularProgress from "@mui/material/CircularProgress"; // ✅ Loader
 
 function DataTable({
   entriesPerPage,
@@ -840,6 +841,8 @@ function DataTable({
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ Loader state
+  const [forceShowLoader, setForceShowLoader] = useState(false);
 
   const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } = useTable(
     {
@@ -854,10 +857,20 @@ function DataTable({
   );
 
   const fetchData = async () => {
-    const result = await fetchDataRows({ pageIndex, pageSize, globalFilter });
-    if (result && Array.isArray(result.data)) {
-      setData(result.data);
-      setTotalCount(result.total || 0);
+    try {
+      setLoading(true); // ✅ Start loader
+      setForceShowLoader(true); // start showing loader
+
+      const result = await fetchDataRows({ pageIndex, pageSize, globalFilter });
+      if (result && Array.isArray(result.data)) {
+        setData(result.data);
+        setTotalCount(result.total || 0);
+      }
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+        setForceShowLoader(false);
+      }, 500);
     }
   };
 
@@ -1010,7 +1023,7 @@ function DataTable({
             );
           })}
         </TableBody> */}
-        <TableBody {...getTableBodyProps()}>
+        {/* <TableBody {...getTableBodyProps()}>
           {rows.length > 0 ? (
             rows.map((row, key) => {
               prepareRow(row);
@@ -1037,6 +1050,71 @@ function DataTable({
                 sx={{ py: 4, textAlign: "center" }}
               >
                 <strong>No data available</strong>
+              </DataTableBodyCell>
+            </TableRow>
+          )}
+        </TableBody> */}
+        <TableBody {...getTableBodyProps()}>
+          {loading ? (
+            <TableRow>
+              <DataTableBodyCell
+                colSpan={headerGroups[0]?.headers?.length || 1}
+                align="center"
+                sx={{
+                  py: 4,
+                  position: "relative", // ✅ needed for absolute centering
+                  height: 100, // or whatever height you want for the row
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "70%",
+                    transform: "translate(-50%, -50%)", // ✅ perfectly center
+                  }}
+                >
+                  <CircularProgress size={48} sx={{ color: "#3498DB" }} /> {/* ✅ Loader */}
+                </div>
+              </DataTableBodyCell>
+            </TableRow>
+          ) : rows.length > 0 ? (
+            rows.map((row, key) => {
+              prepareRow(row);
+              return (
+                <TableRow key={key} {...row.getRowProps()}>
+                  {row.cells.map((cell, idx) => (
+                    <DataTableBodyCell
+                      key={idx}
+                      noBorder={noEndBorder && rows.length - 1 === key}
+                      align={cell.column.align || "left"}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </DataTableBodyCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <DataTableBodyCell
+                colSpan={headerGroups[0]?.headers?.length || 1}
+                align="center"
+                sx={{ position: "relative", height: 100 }} // adjust height as needed
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "70%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    textAlign: "center",
+                    fontSize: "18px",
+                  }}
+                >
+                  <strong>No data available</strong>
+                </div>
               </DataTableBodyCell>
             </TableRow>
           )}
