@@ -40,7 +40,7 @@ const ExerciseLogs = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/admin/log/${logToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,7 +64,7 @@ const ExerciseLogs = () => {
     try {
       const token = localStorage.getItem("token");
       // const response = await axios.get(
-      //   "https://api.nutriverseai.in/api/v1/admin/log/?page=0&limit=10&type=exercise",
+      //   "${process.env.REACT_APP_API_URL}/api/v1/admin/log/?page=0&limit=10&type=exercise",
       //   {
       //     headers: {
       //       Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const ExerciseLogs = () => {
       //   }
       // );
 
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/log/");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/log/`);
 
       const params = new URLSearchParams();
 

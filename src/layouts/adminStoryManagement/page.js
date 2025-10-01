@@ -78,7 +78,7 @@
 //     try {
 //       setUploading(true);
 //       const res = await axios.post(
-//         "https://api.nutriverseai.in/api/v1/admin/story/upload",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/story/upload",
 //         formData,
 //         {
 //           headers: {
@@ -102,7 +102,7 @@
 
 //     try {
 //       await axios.post(
-//         "https://api.nutriverseai.in/api/v1/admin/story",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/story",
 //         {
 //           text: storyForm.text.length > 0 ? storyForm.text : undefined,
 //           type: storyForm.type,
@@ -129,7 +129,7 @@
 
 //     try {
 //       await axios.patch(
-//         `https://api.nutriverseai.in/api/v1/admin/story/${editStoryId}`,
+//         `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${editStoryId}`,
 //         {
 //           text: storyForm.text,
 //           type: storyForm.type,
@@ -172,7 +172,7 @@
 //     const token = localStorage.getItem("token");
 //     try {
 //       await axios.delete(
-//         `https://api.nutriverseai.in/api/v1/admin/user/story/${storyToDelete}`,
+//         `${process.env.REACT_APP_API_URL}/api/v1/admin/user/story/${storyToDelete}`,
 //         {
 //           headers: {
 //             Authorization: `Bearer ${token}`,
@@ -190,8 +190,8 @@
 //   const onsubmit = async () => {
 //     const url =
 //       user.isDisabled === true
-//         ? `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/enable`
-//         : `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/disable`;
+//         ? `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${user._id}/enable`
+//         : `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${user._id}/disable`;
 
 //     try {
 //       const token = localStorage.getItem("token");
@@ -209,12 +209,12 @@
 //     try {
 //       const token = localStorage.getItem("token");
 //       // const response = await axios.get(
-//       //   "https://api.nutriverseai.in/api/v1/admin/story?page=0&limit=10",
+//       //   "${process.env.REACT_APP_API_URL}/api/v1/admin/story?page=0&limit=10",
 //       //   {
 //       //     headers: { Authorization: `Bearer ${token}` },
 //       //   }
 //       // );
-//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/story");
+//       const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/story");
 
 //       const params = new URLSearchParams();
 
@@ -588,7 +588,7 @@
 //     try {
 //       setUploading(true);
 //       const res = await axios.post(
-//         "https://api.nutriverseai.in/api/v1/admin/story/upload",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/story/upload",
 //         formData,
 //         {
 //           headers: {
@@ -612,7 +612,7 @@
 
 //     try {
 //       await axios.post(
-//         "https://api.nutriverseai.in/api/v1/admin/story",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/story",
 //         {
 //           text: storyForm.text.length > 0 ? storyForm.text : undefined,
 //           type: storyForm.type,
@@ -638,7 +638,7 @@
 
 //     try {
 //       await axios.patch(
-//         `https://api.nutriverseai.in/api/v1/admin/story/${editStoryId}`,
+//         `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${editStoryId}`,
 //         {
 //           text: storyForm.text,
 //           type: storyForm.type,
@@ -677,7 +677,7 @@
 //   const confirmDelete = async () => {
 //     const token = localStorage.getItem("token");
 //     try {
-//       await axios.delete(`https://api.nutriverseai.in/api/v1/admin/story/${storyToDelete}`, {
+//       await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/admin/story/${storyToDelete}`, {
 //         headers: {
 //           Authorization: `Bearer ${token}`,
 //         },
@@ -695,8 +695,8 @@
 //   const onsubmit = async () => {
 //     const url =
 //       user.isDisabled === true
-//         ? `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/enable`
-//         : `https://api.nutriverseai.in/api/v1/admin/story/${user._id}/disable`;
+//         ? `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${user._id}/enable`
+//         : `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${user._id}/disable`;
 
 //     try {
 //       const token = localStorage.getItem("token");
@@ -712,7 +712,7 @@
 //   const fetchUsers = async ({ pageIndex, pageSize }) => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/story");
+//       const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/story");
 //       const params = new URLSearchParams();
 
 //       if (pageSize) params.append("limit", pageSize);
@@ -1051,7 +1051,7 @@ const StoryManagement = () => {
     try {
       setUploading(true);
       const res = await axios.post(
-        "https://api.nutriverseai.in/api/v1/admin/story/upload",
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/story/upload`,
         formData,
         {
           headers: {
@@ -1075,7 +1075,7 @@ const StoryManagement = () => {
 
     try {
       await axios.post(
-        "https://api.nutriverseai.in/api/v1/admin/story",
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/story`,
         {
           text: storyForm.text.length > 0 ? storyForm.text : undefined,
           type: storyForm.type,
@@ -1102,7 +1102,7 @@ const StoryManagement = () => {
 
     try {
       await axios.patch(
-        `https://api.nutriverseai.in/api/v1/admin/story/${editStoryId}`,
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/story/${editStoryId}`,
         {
           text: storyForm.text,
           type: storyForm.type,
@@ -1141,7 +1141,7 @@ const StoryManagement = () => {
   const confirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/story/${storyToDelete}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/admin/story/${storyToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -1159,7 +1159,7 @@ const StoryManagement = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/story");
+      const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/story");
       const params = new URLSearchParams();
 
       if (pageSize) params.append("limit", pageSize);

@@ -49,11 +49,14 @@ const ContactUs = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/contact-us/${logToDelete}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setConfirmOpen(false);
       setLogToDelete(null);
       setReload(reload + 1);
@@ -84,14 +87,14 @@ const ContactUs = () => {
     try {
       const token = localStorage.getItem("token");
       // const response = await axios.get(
-      //   "https://api.nutriverseai.in/api/v1/admin/contact-us/?page=0&limit=10",
+      //   "${process.env.REACT_APP_API_URL}/api/v1/admin/contact-us/?page=0&limit=10",
       //   {
       //     headers: {
       //       Authorization: `Bearer ${token}`,
       //     },
       //   }
       // );
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/contact-us");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/contact-us`);
 
       const params = new URLSearchParams();
 

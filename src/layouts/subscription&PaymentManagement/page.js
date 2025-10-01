@@ -45,7 +45,7 @@
 //   const handleConfirmDelete = async () => {
 //     const token = localStorage.getItem("token");
 //     try {
-//       await axios.delete(`https://api.nutriverseai.in/api/v1/admin/contact-us/${logToDelete}`, {
+//       await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/admin/contact-us/${logToDelete}`, {
 //         headers: {
 //           Authorization: `Bearer ${token}`,
 //         },
@@ -80,14 +80,14 @@
 //     try {
 //       const token = localStorage.getItem("token");
 //       // const response = await axios.get(
-//       //   "https://api.nutriverseai.in/api/v1/admin/contact-us/?page=0&limit=10",
+//       //   "${process.env.REACT_APP_API_URL}/api/v1/admin/contact-us/?page=0&limit=10",
 //       //   {
 //       //     headers: {
 //       //       Authorization: `Bearer ${token}`,
 //       //     },
 //       //   }
 //       // );
-//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 
@@ -261,7 +261,7 @@
 //     console.log(token, "ishan");
 //     try {
 //       await axios.patch(
-//         `https://api.nutriverseai.in/api/v1/admin/subscription/status`,
+//         `${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status`,
 //         {
 //           status: "cancel",
 //           userId: selectedUserId,
@@ -308,7 +308,7 @@
 //     const token = localStorage.getItem("token");
 //     try {
 //       await axios.patch(
-//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status",
 //         {
 //           status: "renew",
 //           userId: selectedUserId,
@@ -332,7 +332,7 @@
 //   const fetchUsers = async ({ pageIndex, pageSize }) => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 //       if (pageSize) params.append("limit", pageSize);
@@ -570,7 +570,7 @@
 //     const token = localStorage.getItem("token");
 //     try {
 //       await axios.patch(
-//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status",
 //         {
 //           status: "renew",
 //           userId: selectedUserId,
@@ -597,7 +597,7 @@
 
 //     try {
 //       await axios.patch(
-//         "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+//         "${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status",
 //         {
 //           status: "cancel",
 //           userId: userId,
@@ -619,7 +619,7 @@
 //   const fetchUsers = async ({ pageIndex, pageSize }) => {
 //     try {
 //       const token = localStorage.getItem("token");
-//       const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+//       const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/user");
 
 //       const params = new URLSearchParams();
 //       if (pageSize) params.append("limit", pageSize);
@@ -864,7 +864,7 @@ const ContactUs = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.patch(
-        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status`,
         {
           status: "renew",
           userId: selectedUserId,
@@ -906,7 +906,7 @@ const ContactUs = () => {
 
     try {
       await axios.patch(
-        "https://api.nutriverseai.in/api/v1/admin/subscription/status",
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/subscription/status`,
         {
           status: "cancel",
           userId: userId,
@@ -934,7 +934,7 @@ const ContactUs = () => {
   const fetchUsers = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/user");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/user`);
 
       const params = new URLSearchParams();
       if (pageSize) params.append("limit", pageSize);

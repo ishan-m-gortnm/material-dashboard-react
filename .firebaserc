@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "nutriverse-ai-6013e"
+  },
+  "targets": {
+    "nutriverse-ai-6013e": {
+      "hosting": {
+        "qa-admin-nutriverse": [
+          "qa-admin-nutriverse"
+        ],
+        "prod-admin-nutriverse": [
+          "prod-admin-nutriverse"
+        ]
+      }
+    }
   }
 }

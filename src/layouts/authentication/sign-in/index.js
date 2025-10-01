@@ -76,7 +76,7 @@ function Basic() {
       setError("");
       try {
         const response = await axios.post(
-          "https://api.nutriverseai.in/api/v1/admin/auth/login",
+          `${process.env.REACT_APP_API_URL}/api/v1/admin/auth/login`,
           values
         );
         console.log("Login Success", response.data);
