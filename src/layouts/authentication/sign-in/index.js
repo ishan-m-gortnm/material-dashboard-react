@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -95,7 +95,7 @@ function Basic() {
       }
     },
   });
-
+  useEffect(() => console.log("hello world!"), []);
   return (
     <BasicLayout image={bgImage}>
       {/* <ToastContainer position="top-right" autoClose={3000} /> */}

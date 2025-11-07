@@ -67,14 +67,7 @@ const ExerciseLogs = () => {
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
       const token = localStorage.getItem("token");
-      // const response = await axios.get(
-      //   "https://api.qa.nutriverseai.in/api/v1/admin/log/?page=0&limit=10&type=food",
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+
       const url = new URL("https://api.nutriverseai.in/api/v1/admin/log");
 
       const params = new URLSearchParams();
@@ -112,7 +105,6 @@ const ExerciseLogs = () => {
         ),
       }));
 
-      // setRows(formattedRows);
       return {
         data: formattedRows,
         total: response.data?.data?.count,
@@ -121,10 +113,6 @@ const ExerciseLogs = () => {
       console.error("Error fetching users:", error);
     }
   };
-
-  useEffect(() => {
-    // fetchUsers();
-  }, []);
 
   return (
     <MDBox>
@@ -138,21 +126,6 @@ const ExerciseLogs = () => {
         noEndBorder
       />
 
-      {/* Confirmation Dialog */}
-      {/* <Dialog open={confirmOpen} onClose={handleCancelDelete} >
-        <DialogContent>
-          <p>Are you sure you want to delete this log?</p>
-        </DialogContent>
-        <DialogTitle>Are you sure you want to delete this log?</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCancelDelete} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmDelete} color="error">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog> */}
       <ConfirmationPopUp
         open={confirmOpen}
         onClose={handleCancelDelete}

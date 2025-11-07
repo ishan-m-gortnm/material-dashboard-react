@@ -13,6 +13,7 @@ import DailyLog from "components/DailyLog/page";
 import RatingFeedback from "components/RatingFeedback/page";
 import User from "components/userDetail/page";
 import PhysicalStats from "components/physicalStats/page";
+import FoodScans from "components/FoodScans/page";
 
 const UserDetailPage = () => {
   const { id } = useParams();
@@ -98,6 +99,8 @@ const UserDetailPage = () => {
         return <RatingFeedback />;
       case "physicalStats":
         return <PhysicalStats />;
+      case "foodScans":
+        return <FoodScans />;
       default:
         return null;
     }
@@ -106,61 +109,6 @@ const UserDetailPage = () => {
   return (
     <DashboardLayout>
       <UserDetailTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      {/* <div style={{ display: "flex", gap: "8px", marginLeft: "10px" }}>
-        <button
-          style={{
-            margin: "4px",
-            padding: "8px 12px",
-            backgroundColor: "#007bff",
-            color: "white",
-            borderRadius: "20px",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          MealLogs
-        </button>
-        <button
-          style={{
-            margin: "4px",
-            padding: "8px 12px",
-            backgroundColor: "#007bff",
-            color: "white",
-            borderRadius: "20px",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          ExerciseLogs
-        </button>
-        <button
-          style={{
-            margin: "4px",
-            padding: "8px 12px",
-            backgroundColor: "#007bff",
-            color: "white",
-            borderRadius: "20px",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          Progress History
-        </button>
-        <button
-          style={{
-            margin: "4px",
-            padding: "8px 12px",
-            backgroundColor: "#007bff",
-            color: "white",
-            borderRadius: "20px",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          Rateing & Feedback
-        </button>
-      </div> */}
 
       <Card sx={{ mt: 6 }}>
         <MDBox
@@ -178,16 +126,6 @@ const UserDetailPage = () => {
           </MDTypography>
         </MDBox>
 
-        {/* <MDBox p={3}>
-          <DataTable
-            table={{ columns, rows }}
-            isSorted={false}
-            entriesPerPage={true}
-            showTotalEntries={true}
-            canSearch={true}
-            noEndBorder
-          />
-        </MDBox> */}
         <MDBox p={3}>{renderTabContent()}</MDBox>
       </Card>
     </DashboardLayout>

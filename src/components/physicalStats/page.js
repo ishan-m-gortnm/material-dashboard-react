@@ -113,10 +113,6 @@ const PhysicalStats = () => {
     }
   };
 
-  useEffect(() => {
-    // fetchUsers();
-  }, []);
-
   return (
     <MDBox>
       <DataTable

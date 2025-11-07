@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import DataTable from "examples/Tables/DataTable";
 import ConfirmationPopUp from "components/confirmationPopup/page";
 
-import {
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
 import MDBox from "components/MDBox";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const ExerciseLogs = () => {
   const [rows, setRows] = useState([]);
@@ -110,14 +101,8 @@ const ExerciseLogs = () => {
             {user.goal.protein} g /{user.progress.protein} g
           </div>
         ),
-        // action: (
-        //   <IconButton color="error" onClick={() => handleDeleteClick(user._id)}>
-        //     <DeleteIcon />
-        //   </IconButton>
-        // ),
       }));
 
-      // setRows(formattedRows);
       return {
         data: formattedRows,
         total: response.data?.data?.count,
@@ -126,10 +111,6 @@ const ExerciseLogs = () => {
       console.error("Error fetching users:", error);
     }
   };
-
-  useEffect(() => {
-    // fetchUsers();
-  }, []);
 
   return (
     <MDBox>
