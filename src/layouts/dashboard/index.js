@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -35,7 +35,9 @@ function Dashboard() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setStats(response.data.data);
+        if (response.status === HttpStatusCode.Ok) {
+          setStats(response?.data?.data);
+        }
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -73,49 +75,49 @@ function Dashboard() {
               color: "dark",
               icon: "people",
               title: "Total Users",
-              count: stats.users.total,
+              count: stats?.users?.total,
             },
             {
               color: "info",
               icon: "restaurant",
               title: "Total Food Scans",
-              count: stats.foodStats.totalFoodScans,
+              count: stats?.foodStats?.totalFoodScans,
             },
             {
               color: "success",
               icon: "person",
               title: "Active Users",
-              count: stats.users.active,
+              count: stats?.users?.active,
             },
             {
               color: "warning",
               icon: "today",
               title: "Daily Active Users",
-              count: stats.foodStats.dailyActiveUsers,
+              count: stats?.foodStats?.dailyActiveUsers,
             },
             {
               color: "secondary",
               icon: "date_range",
               title: "Monthly Active Users",
-              count: stats.foodStats.monthlyActiveUsers,
+              count: stats?.foodStats?.monthlyActiveUsers,
             },
             {
               color: "info",
               icon: "person_off",
               title: "Yearly Users",
-              count: stats.users.yearlyUsers,
+              count: stats?.users?.yearlyUsers,
             },
             {
               color: "info",
               icon: "person",
               title: "Free Users",
-              count: stats.users.freeUsers,
+              count: stats?.users?.freeUsers,
             },
             {
               color: "info",
               icon: "person_off",
               title: "Free Users with Zero Credits",
-              count: stats.users.freeUsersWithZeroCredits,
+              count: stats?.users?.freeUsersWithZeroCredits,
             },
           ].map((item, index) => (
             <Grid item xs={12} md={6} lg={3} key={index}>
