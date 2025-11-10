@@ -30,7 +30,7 @@ function Dashboard() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "https://api.nutriverseai.in/api/v1/admin/stats/dashboard",
+          `${process.env.REACT_APP_API_URL}/api/v1/admin/stats/dashboard`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -139,7 +139,7 @@ function Dashboard() {
             fetchDataRows={async ({ pageIndex, pageSize }) => {
               const token = localStorage.getItem("token");
               const response = await axios.get(
-                `https://api.nutriverseai.in/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
+                `${process.env.REACT_APP_API_URL}/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
                 { headers: { Authorization: `Bearer ${token}` } }
               );
 

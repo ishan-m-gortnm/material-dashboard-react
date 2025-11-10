@@ -63,7 +63,7 @@ const FoodScans = () => {
       const token = localStorage.getItem("token");
       const { from, to } = calculateDateRange(period);
 
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/log");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/log`);
       const params = new URLSearchParams();
       params.append("userId", id);
       params.append("type", "food");
@@ -125,7 +125,7 @@ const FoodScans = () => {
   const handleConfirmDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/log/${logToDelete}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/v1/admin/log/${logToDelete}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setConfirmOpen(false);
