@@ -77,11 +77,14 @@ const CustomNotification = () => {
   const confirmDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://api.nutriverseai.in/api/v1/admin/notification/${storyToDelete}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/admin/notification/${storyToDelete}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       toast.success("Notification deleted successfully");
       setConfirmDeleteOpen(false);
@@ -95,7 +98,7 @@ const CustomNotification = () => {
   const fetchNotifications = async ({ pageIndex, pageSize }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("https://api.nutriverseai.in/api/v1/admin/notification");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/notification`);
       const params = new URLSearchParams();
 
       if (pageSize) params.append("limit", pageSize);
@@ -174,7 +177,7 @@ const CustomNotification = () => {
         goal: type,
       };
 
-      await axios.post("https://api.nutriverseai.in/api/v1/admin/notification", payload, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/admin/notification`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
