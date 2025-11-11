@@ -9,7 +9,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DataTable from "examples/Tables/DataTable";
-import capitalizeWords from "utils";
+import capitalizeWords from "../../utils";
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -83,12 +83,7 @@ function Dashboard() {
               title: "Total Food Scans",
               count: stats?.foodStats?.totalFoodScans,
             },
-            {
-              color: "success",
-              icon: "person",
-              title: "Active Users",
-              count: stats?.users?.active,
-            },
+
             {
               color: "warning",
               icon: "today",
@@ -101,12 +96,7 @@ function Dashboard() {
               title: "Monthly Active Users",
               count: stats?.foodStats?.monthlyActiveUsers,
             },
-            {
-              color: "info",
-              icon: "person_off",
-              title: "Yearly Users",
-              count: stats?.users?.yearlyUsers,
-            },
+
             {
               color: "info",
               icon: "person",

@@ -39,26 +39,22 @@ const UserManagement = () => {
   const [reload, setReload] = useState(1);
 
   const columns = [
-    { Header: "S no.", accessor: "sno", width: "5%", align: "center" },
-
-    { Header: "name", accessor: "name", width: "25%", align: "center" },
-    { Header: "phone", accessor: "phone", align: "center" },
-    { Header: "goal", accessor: "goal", align: "center" },
-    { Header: "gender", accessor: "gender", align: "center" },
-
-    { Header: "reg Date", accessor: "regDate", align: "center" },
-    { Header: "subscription", accessor: "subscription", align: "center" },
-    { Header: "status", accessor: "status", align: "center" },
-    { Header: "added By", accessor: "addedBy", align: "center" },
-
-    { Header: "purchase Date", accessor: "purchaseDate", align: "center" },
-
-    { Header: "amount Paid", accessor: "amountPaid", align: "center" },
-    { Header: "amount Refunded", accessor: "amountRefunded", align: "center" },
-    { Header: "isDisabled", accessor: "isDisabled", align: "center" },
-    { Header: "deletionRequestedAt", accessor: "deletionRequestedAt", align: "center" },
-
-    { Header: "action", accessor: "action", align: "center" },
+    { Header: "S no.", accessor: "sno", width: "5%", align: "left" },
+    { Header: "name", accessor: "name", width: "25%", align: "left" },
+    { Header: "phone", accessor: "phone", align: "left" },
+    { Header: "goal", accessor: "goal", align: "left" },
+    { Header: "gender", accessor: "gender", align: "left" },
+    { Header: "Scans", accessor: "scans", align: "left" },
+    { Header: "reg Date", accessor: "regDate", align: "left" },
+    { Header: "subscription", accessor: "subscription", align: "left" },
+    { Header: "status", accessor: "status", align: "left" },
+    { Header: "added By", accessor: "addedBy", align: "left" },
+    { Header: "purchase Date", accessor: "purchaseDate", align: "left" },
+    { Header: "amount Paid", accessor: "amountPaid", align: "left" },
+    { Header: "amount Refunded", accessor: "amountRefunded", align: "left" },
+    { Header: "isDisabled", accessor: "isDisabled", align: "left" },
+    { Header: "deletionRequestedAt", accessor: "deletionRequestedAt", align: "left" },
+    { Header: "action", accessor: "action", align: "left" },
   ];
 
   const goals = [
@@ -133,9 +129,10 @@ const UserManagement = () => {
 
       const formattedRows = users.map((user, index) => ({
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
-        name: <a href={`/user/${user._id}`}>{user.details.name || "User"}</a>,
+        name: <a href={`/user/${user._id}`}>{capitalizeWords(user.details.name) || "User"}</a>,
         goal: <div>{capitalizeWords(user.details.goal) || "-"}</div>,
         gender: <div>{capitalizeWords(user.details.gender) || "-"}</div>,
+        scans: <div>{user.dailyFoodScans ?? "-"}</div>,
         diet: <div>{capitalizeWords(user.details.diet) || "-"}</div>,
         phone: <div>{user.mobileNumber || "-"}</div>,
         subscription: <div>{capitalizeWords(user?.subscription?.planType) || "-"}</div>,
