@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DataTable from "examples/Tables/DataTable";
@@ -13,19 +13,16 @@ import {
   IconButton,
   TextField,
   Box,
-  Button,
 } from "@mui/material";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { FaLock } from "react-icons/fa";
 import { FaLockOpen } from "react-icons/fa";
-import Approve from "components/BlockModal/page";
-import UnBlock from "components/UnBlockModal/page";
 import MDButton from "components/MDButton";
 import Dropdown from "components/Dropdown";
 import { toast } from "react-toastify";
+import capitalizeWords from "utils";
 
 const UserManagement = () => {
   const [rows, setRows] = useState([]);
@@ -48,8 +45,7 @@ const UserManagement = () => {
     { Header: "phone", accessor: "phone", align: "center" },
     { Header: "goal", accessor: "goal", align: "center" },
     { Header: "gender", accessor: "gender", align: "center" },
-    // { Header: "diet", accessor: "diet", align: "center" },
-    // { Header: "bmi", accessor: "bmiCategory", align: "center" },
+
     { Header: "reg Date", accessor: "regDate", align: "center" },
     { Header: "subscription", accessor: "subscription", align: "center" },
     { Header: "status", accessor: "status", align: "center" },
@@ -137,14 +133,14 @@ const UserManagement = () => {
 
       const formattedRows = users.map((user, index) => ({
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
-        name: <a href={`/user/${user._id}`}>{user.details.name || "-"}</a>,
-        goal: <div>{user.details.goal || "-"}</div>,
-        gender: <div>{user.details.gender || "-"}</div>,
-        diet: <div>{user.details.diet || "-"}</div>,
+        name: <a href={`/user/${user._id}`}>{user.details.name || "User"}</a>,
+        goal: <div>{capitalizeWords(user.details.goal) || "-"}</div>,
+        gender: <div>{capitalizeWords(user.details.gender) || "-"}</div>,
+        diet: <div>{capitalizeWords(user.details.diet) || "-"}</div>,
         phone: <div>{user.mobileNumber || "-"}</div>,
-        subscription: <div>{user?.subscription?.planType || "-"}</div>,
-        status: <div>{user?.subscription?.status || "-"}</div>,
-        addedBy: <div>{user?.subscription?.addedBy || "-"}</div>,
+        subscription: <div>{capitalizeWords(user?.subscription?.planType) || "-"}</div>,
+        status: <div>{capitalizeWords(user?.subscription?.status) || "-"}</div>,
+        addedBy: <div>{capitalizeWords(user?.subscription?.addedBy) || "-"}</div>,
         amountPaid: <div>{user?.subscription?.amountPaid || "0"}</div>,
         amountRefunded: <div>{user?.subscription?.amountRefunded || "0"}</div>,
         isDisabled: <div>{user?.isDisabled ? "Yes" : "No"}</div>,
@@ -212,8 +208,6 @@ const UserManagement = () => {
   }, [goalFilter, genderFilter, searchQuery, diet, bmiFilter]);
 
   const onsubmit = async () => {
-    console.log(user, "user"); // Check the data on submit
-
     // Mapping status to Block and Unblock (1 = Block, 2 = Unblock)
     const url =
       user.isDisabled === true
@@ -236,7 +230,6 @@ const UserManagement = () => {
       if (response.status === 200) {
         console.log("Status updated successfully");
         toast.success("Status updated successfully");
-        // fetchUsers();
         setReload(reload + 1);
         handleClose();
       }
@@ -248,29 +241,21 @@ const UserManagement = () => {
   function handlegoalFilter(e) {
     console.log(e.target.value, "ishan");
     setGoalFilter(e.target.value);
-    // setPage(0);
-    // setSearchKeyword("");
   }
 
   function handledietFilter(e) {
     console.log(e.target.value, "ishan");
     setDiet(e.target.value);
-    // setPage(0);
-    // setSearchKeyword("");
   }
 
   function handlegenderFilter(e) {
     console.log(e.target.value, "ishan");
     setGenderFilter(e.target.value);
-    // setPage(0);
-    // setSearchKeyword("");
   }
 
   function handlebmiFilter(e) {
     console.log(e.target.value, "ishan");
     setBmiFilter(e.target.value);
-    // setPage(0);
-    // setSearchKeyword("");
   }
   return (
     <DashboardLayout>
@@ -298,12 +283,7 @@ const UserManagement = () => {
             marginBottom: "10px",
           }}
         >
-          <Dropdown
-            options={genderOptions}
-            onChange={handlegenderFilter}
-            label="Select Gender"
-            // IconComponent={ArrowDropDownIcon}
-          />
+          <Dropdown options={genderOptions} onChange={handlegenderFilter} label="Select Gender" />
         </Box>
         <Box
           sx={{
@@ -345,17 +325,7 @@ const UserManagement = () => {
             User Management
           </MDTypography>
         </MDBox>
-        {/* <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "200px",
-            marginTop: "20px",
-            marginLeft: "20px",
-          }}
-        >
-          <Dropdown options={goals} onChange={handlegoalFilter} label="Gender" />
-        </Box> */}
+
         <MDBox>
           <DataTable
             table={{ columns, rows }}
@@ -368,7 +338,6 @@ const UserManagement = () => {
             fetchDataRows={fetchUsers}
             onSearch={(val) => {
               setSearchQuery(val);
-              // setPage(0); // reset to first page on new search
             }}
           />
         </MDBox>
@@ -436,12 +405,7 @@ const UserManagement = () => {
                   gap: 2,
                 }}
               >
-                <TextField
-                  label="Subscription"
-                  // value={selectedUser.subscription}
-                  disabled
-                  sx={{ width: "50%" }}
-                />
+                <TextField label="Subscription" disabled sx={{ width: "50%" }} />
                 <TextField
                   label="Registered On"
                   value={new Date(selectedUser.createdAt).toLocaleString()}
@@ -469,7 +433,6 @@ const UserManagement = () => {
           )}
         </DialogContent>
       </Dialog>
-      {/* {isOpen && <Approve onClose={handleClose} onsubmit={onsubmit} isOpen={isOpen} />} */}
       <ConfirmationPopUp
         open={isOpen}
         onClose={handleClose}
@@ -478,9 +441,7 @@ const UserManagement = () => {
         content={"Are you sure you want to Block this User?"}
         description={"This action can be reverted later."}
       />
-      {/* {isunBlockOpen && (
-        <UnBlock onClose={handleClose} onsubmit={onsubmit} isOpen={isunBlockOpen} />
-      )} */}
+
       <ConfirmationPopUp
         open={isunBlockOpen}
         onClose={handleClose}

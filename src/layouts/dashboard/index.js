@@ -4,12 +4,12 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import axios, { HttpStatusCode } from "axios";
-
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DataTable from "examples/Tables/DataTable";
+import capitalizeWords from "utils";
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -150,11 +150,11 @@ function Dashboard() {
                 data: data.map((entry, index) => ({
                   sno: <div>{index + 1 + pageIndex * pageSize}</div>,
                   createdAt: <div>{new Date(entry.createdAt).toLocaleDateString()}</div>,
-                  name: <div>{entry.details.name || "-"}</div>,
-                  goal: <div>{entry.details.goal || "-"}</div>,
-                  gender: <div>{entry.details.gender || "-"}</div>,
+                  name: <div>{capitalizeWords(entry.details.name) || "User"}</div>,
+                  goal: <div>{capitalizeWords(entry.details.goal) || "-"}</div>,
+                  gender: <div>{capitalizeWords(entry.details.gender) || "-"}</div>,
                   phone: <div>{entry.mobileNumber || "-"}</div>,
-                  subscription: <div>{entry?.subscription?.planType || "-"}</div>,
+                  subscription: <div>{capitalizeWords(entry?.subscription?.planType) || "-"}</div>,
                 })),
                 total: response.data?.data?.count || 0,
               };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Grid, Paper, Divider } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 
 const UserDetail = ({ user }) => {
   const { details, mobileNumber } = user;
@@ -7,13 +7,32 @@ const UserDetail = ({ user }) => {
     if (!lbs || isNaN(lbs)) return "N/A";
     return (lbs * 0.453592).toFixed(2);
   };
+
   return (
-    <Box sx={{ p: 4, mx: "auto" }}>
-      <Grid container spacing={3}>
+    <Box
+      sx={{
+        p: { xs: 2, sm: 3, md: 4 },
+        mx: "auto",
+        width: "100%",
+        maxWidth: "1200px",
+      }}
+    >
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
         {/* Personal Info */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h6" gutterBottom style={{ color: "#2A84EB" }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: { xs: 2, sm: 3 },
+              borderRadius: 3,
+              height: "100%",
+            }}
+          >
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "#2A84EB", fontSize: { xs: "1rem", sm: "1.1rem" } }}
+            >
               Personal Info
             </Typography>
             <Typography>
@@ -33,8 +52,12 @@ const UserDetail = ({ user }) => {
 
         {/* Body Metrics */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h6" gutterBottom style={{ color: "#2A84EB" }}>
+          <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, height: "100%" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "#2A84EB", fontSize: { xs: "1rem", sm: "1.1rem" } }}
+            >
               Body Metrics
             </Typography>
             <Typography>
@@ -42,15 +65,12 @@ const UserDetail = ({ user }) => {
               {details.height?.centimeters} cm)
             </Typography>
             <Typography>
-              <strong>Weight:</strong>
-              {/* {details.weight?.pounds} lbs ({details.weight?.grams / 1000} kg) */}
-              {details.weight?.pounds ?? "N/A"} lbs ({poundsToKg(details.weight?.pounds)} kg){" "}
+              <strong>Weight:</strong> {details.weight?.pounds ?? "N/A"} lbs (
+              {poundsToKg(details.weight?.pounds)} kg)
             </Typography>
             <Typography>
-              <strong>Desired Weight:</strong>
-              {/* {details.desiredWeight?.pounds} lbs ({details.desiredWeight?.grams / 1000} kg) */}
-              {details.desiredWeight?.pounds ?? "N/A"} lbs (
-              {poundsToKg(details.desiredWeight?.pounds)} kg){" "}
+              <strong>Desired Weight:</strong> {details.desiredWeight?.pounds ?? "N/A"} lbs (
+              {poundsToKg(details.desiredWeight?.pounds)} kg)
             </Typography>
             <Typography>
               <strong>Metric:</strong> {details.metric}
@@ -60,8 +80,19 @@ const UserDetail = ({ user }) => {
 
         {/* Goals & Fitness */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 3, height: "240px" }}>
-            <Typography variant="h6" gutterBottom style={{ color: "#2A84EB" }}>
+          <Paper
+            elevation={2}
+            sx={{
+              p: { xs: 2, sm: 3 },
+              borderRadius: 3,
+              height: "100%",
+            }}
+          >
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "#2A84EB", fontSize: { xs: "1rem", sm: "1.1rem" } }}
+            >
               Goals & Fitness
             </Typography>
             <Typography>
@@ -81,8 +112,12 @@ const UserDetail = ({ user }) => {
 
         {/* Motivation & Source */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h6" gutterBottom style={{ color: "#2A84EB" }}>
+          <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3, height: "100%" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "#2A84EB", fontSize: { xs: "1rem", sm: "1.1rem" } }}
+            >
               Motivation
             </Typography>
             <Typography>
@@ -102,27 +137,31 @@ const UserDetail = ({ user }) => {
 
         {/* Nutrition Recommendation */}
         <Grid item xs={12}>
-          <Paper elevation={2} sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h6" gutterBottom style={{ color: "#2A84EB" }}>
+          <Paper elevation={2} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 3 }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ color: "#2A84EB", fontSize: { xs: "1rem", sm: "1.1rem" } }}
+            >
               Daily Nutrition Recommendation
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} sm={3}>
                 <Typography>
                   <strong>Calories:</strong> {details.dailyRecommendation?.calories} kcal
                 </Typography>
               </Grid>
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} sm={3}>
                 <Typography>
                   <strong>Carbs:</strong> {details.dailyRecommendation?.carbs} g
                 </Typography>
               </Grid>
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} sm={3}>
                 <Typography>
                   <strong>Protein:</strong> {details.dailyRecommendation?.protein} g
                 </Typography>
               </Grid>
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} sm={3}>
                 <Typography>
                   <strong>Fats:</strong> {details.dailyRecommendation?.fats} g
                 </Typography>
