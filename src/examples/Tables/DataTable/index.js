@@ -57,8 +57,7 @@ function DataTable({
     useSortBy
   );
   const location = useLocation();
-
-  console.log(location.pathname);
+  console.log("fetchDataRows prop:", fetchDataRows);
 
   const fetchData = async () => {
     try {
@@ -68,12 +67,15 @@ function DataTable({
         setData(result.data);
         setTotalCount(result.total || 0);
       }
+    } catch (error) {
+      console.log("error", error);
     } finally {
       setTimeout(() => setLoading(false), 400);
     }
   };
 
   useEffect(() => {
+    console.log("fetching rows..........");
     fetchData();
   }, [pageIndex, pageSize, globalFilter, reload]);
 

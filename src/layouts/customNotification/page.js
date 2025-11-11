@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import MDAlertCloseIcon from "components/MDAlert/MDAlertCloseIcon";
 import { toast } from "react-toastify";
+import capitalizeWords from "utils";
 
 const CustomNotification = () => {
   const [rows, setRows] = useState([]);
@@ -52,6 +53,8 @@ const CustomNotification = () => {
     { Header: "S no.", accessor: "sno", width: "10%", align: "center" },
     { Header: "Created At", accessor: "createdAt", width: "20%", align: "center" },
     { Header: "Title", accessor: "title", align: "center" },
+    { Header: "Type", accessor: "type", align: "center" },
+
     {
       Header: "Description (Click to view full message)",
       accessor: "body",
@@ -118,6 +121,8 @@ const CustomNotification = () => {
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
         createdAt: <div>{new Date(notification.createdAt).toLocaleDateString()}</div>,
         title: <div>{notification.title || "-"}</div>,
+        type: <div>{capitalizeWords(notification.goal) || "-"}</div>,
+
         body: (
           <div>
             {notification.body?.split(" ").length > 2 ? (

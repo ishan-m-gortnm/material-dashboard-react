@@ -2,7 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DataTable from "examples/Tables/DataTable";
-import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import { ArrowDropDown as ArrowDropDownIcon, ArrowUpward } from "@mui/icons-material";
+import InputAdornment from "@mui/material/InputAdornment";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 import {
   Card,
@@ -186,10 +189,10 @@ const StoryManagement = () => {
     }
   };
 
-  const fetchUsers = async ({ pageIndex, pageSize }) => {
+  const fetchUsers = async ({ pageIndex = 1, pageSize = 10 }) => {
     try {
       const token = localStorage.getItem("token");
-      const url = new URL("${process.env.REACT_APP_API_URL}/api/v1/admin/story");
+      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/story`);
       const params = new URLSearchParams();
 
       if (pageSize) params.append("limit", pageSize);
@@ -273,6 +276,8 @@ const StoryManagement = () => {
     { Header: "Action", accessor: "action", align: "center" },
   ];
 
+  const [open, setOpen] = useState(false);
+
   return (
     <DashboardLayout>
       <Card sx={{ mt: 3 }}>
@@ -309,22 +314,34 @@ const StoryManagement = () => {
       >
         <DialogTitle>{editDialogOpen ? "Edit Story" : "Create Story"}</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" variant="outlined">
             <InputLabel id="type-label">Select Type</InputLabel>
             <Select
               labelId="type-label"
-              value={storyForm.type}
               label="Select Type"
-              onChange={handleInputChange}
               name="type"
-              sx={{ height: "45px" }}
-              IconComponent={ArrowDropDownIcon}
+              value={storyForm.type}
+              onChange={handleInputChange}
+              open={open}
+              onOpen={() => setOpen(true)}
+              onClose={() => setOpen(false)}
+              input={
+                <OutlinedInput
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <ExpandMoreIcon />
+                    </InputAdornment>
+                  }
+                />
+              }
+              sx={{ height: 45 }}
             >
               <MenuItem value="text">Text</MenuItem>
               <MenuItem value="image">Image</MenuItem>
               <MenuItem value="video">Video</MenuItem>
             </Select>
           </FormControl>
+
           {storyForm.type === "text" && (
             <TextField
               fullWidth
