@@ -38,6 +38,7 @@
     "yup": "^1.1.1"
   },
   "scripts": {
+    "start:dev": "env-cmd -f .env.dev react-scripts start",
     "start:qa": "env-cmd -f .env.qa react-scripts start",
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build:qa": "env-cmd -f .env.qa react-scripts build",
