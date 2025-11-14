@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
-import { HttpStatusCode } from "axios";
+import axios, { HttpStatusCode } from "axios";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DataTable from "examples/Tables/DataTable";
 import capitalizeWords from "../../utils";
-import Tooltip from "@mui/material/Tooltip";
-import { apiClient } from "api/apiClient";
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -23,8 +21,6 @@ function Dashboard() {
     { Header: "Name", accessor: "name", align: "center" },
     { Header: "Goal", accessor: "goal", align: "center" },
     { Header: "Gender", accessor: "gender", align: "center" },
-    { Header: "Scans", accessor: "scans", align: "left" },
-    { Header: "Device", accessor: "device", align: "center" },
     { Header: "Phone", accessor: "phone", align: "center" },
     { Header: "Subscription", accessor: "subscription", align: "center" },
   ];
@@ -32,8 +28,13 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboardStats = async () => {
       try {
-        const response = await apiClient.get("/api/v1/admin/stats/dashboard");
-
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/v1/admin/stats/dashboard`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (response.status === HttpStatusCode.Ok) {
           setStats(response?.data?.data);
         }
@@ -79,8 +80,8 @@ function Dashboard() {
             {
               color: "info",
               icon: "restaurant",
-              title: "Daily Food Scans",
-              count: stats?.foodStats?.dailyFoodScans,
+              title: "Total Food Scans",
+              count: stats?.foodStats?.totalFoodScans,
             },
 
             {
@@ -104,12 +105,6 @@ function Dashboard() {
             },
             {
               color: "info",
-              icon: "person",
-              title: "Paid Users",
-              count: stats?.users?.paidUsers,
-            },
-            {
-              color: "info",
               icon: "person_off",
               title: "Free Users with Zero Credits",
               count: stats?.users?.freeUsersWithZeroCredits,
@@ -117,33 +112,13 @@ function Dashboard() {
           ].map((item, index) => (
             <Grid item xs={12} md={6} lg={3} key={index}>
               <MDBox mb={1.5} height="100%">
-                {item.title === "Paid Users" ? (
-                  <Tooltip
-                    title={`Monthly: ${stats?.users?.monthlyPaidUsers || 0}, Yearly: ${
-                      stats?.users?.yearlyPaidUsers || 0
-                    }`}
-                    arrow
-                    placement="top"
-                  >
-                    <div>
-                      <ComplexStatisticsCard
-                        color={item.color}
-                        icon={item.icon}
-                        title={item.title}
-                        count={item.count}
-                        percentage={{ amount: "", label: "", color: "success" }}
-                      />
-                    </div>
-                  </Tooltip>
-                ) : (
-                  <ComplexStatisticsCard
-                    color={item.color}
-                    icon={item.icon}
-                    title={item.title}
-                    count={item.count}
-                    percentage={{ amount: "", label: "", color: "success" }}
-                  />
-                )}
+                <ComplexStatisticsCard
+                  color={item.color}
+                  icon={item.icon}
+                  title={item.title}
+                  count={item.count}
+                  percentage={{ amount: "", label: "", color: "success" }}
+                />
               </MDBox>
             </Grid>
           ))}
@@ -154,8 +129,10 @@ function Dashboard() {
           <DataTable
             table={{ columns, rows: [] }}
             fetchDataRows={async ({ pageIndex, pageSize }) => {
-              const response = await apiClient.get(
-                `/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`
+              const token = localStorage.getItem("token");
+              const response = await axios.get(
+                `${process.env.REACT_APP_API_URL}/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`,
+                { headers: { Authorization: `Bearer ${token}` } }
               );
 
               const data = response.data?.data?.data || [];
@@ -166,15 +143,14 @@ function Dashboard() {
                   name: <div>{capitalizeWords(entry.details.name) || "User"}</div>,
                   goal: <div>{capitalizeWords(entry.details.goal) || "-"}</div>,
                   gender: <div>{capitalizeWords(entry.details.gender) || "-"}</div>,
-                  scans: <div>{entry.dailyFoodScans || "0"}</div>,
                   phone: <div>{entry.mobileNumber || "-"}</div>,
-                  device: <div>{capitalizeWords(entry?.deviceInfo?.platform) || "-"}</div>,
                   subscription: <div>{capitalizeWords(entry?.subscription?.planType) || "-"}</div>,
                 })),
                 total: response.data?.data?.count || 0,
               };
             }}
             isSorted={false}
+            entriesPerPage={true}
             showTotalEntries={true}
             reload={reload}
             noEndBorder

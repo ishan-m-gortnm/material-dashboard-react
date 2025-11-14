@@ -71,7 +71,7 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
 
-  //  Setup cache for RTL
+  // ✅ Setup cache for RTL
   useEffect(() => {
     const cacheRtl = createCache({
       key: "rtl",
@@ -80,7 +80,7 @@ export default function App() {
     setRtlCache(cacheRtl);
   }, []);
 
-  //  Open sidenav when mouse enters
+  // ✅ Open sidenav when mouse enters
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -88,7 +88,7 @@ export default function App() {
     }
   };
 
-  //  Close sidenav when mouse leaves
+  // ✅ Close sidenav when mouse leaves
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
