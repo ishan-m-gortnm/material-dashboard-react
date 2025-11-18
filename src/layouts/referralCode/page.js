@@ -26,6 +26,7 @@ import MDButton from "components/MDButton";
 import ConfirmationPopUp from "components/confirmationPopup/page";
 import { toast } from "react-toastify";
 import capitalizeWords from "utils";
+import { Link } from "react-router-dom";
 
 const ReferralCode = () => {
   const [loading, setLoading] = useState(false); // Add this
@@ -178,9 +179,9 @@ const ReferralCode = () => {
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
         createdAt: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
         name: (
-          <a href={`/referral/${user._id}`}>
+          <Link to={`/referral/${user._id}`}>
             {capitalizeWords(user.userName || user.details?.name) || "N/A"}
-          </a>
+          </Link>
         ),
         mobileNumber: <div>{user.mobileNumber}</div>,
 

@@ -3,7 +3,6 @@ import axios from "axios";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DataTable from "examples/Tables/DataTable";
 import ConfirmationPopUp from "components/confirmationPopup/page";
-// import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 
 import {
   Card,
@@ -23,6 +22,8 @@ import MDButton from "components/MDButton";
 import Dropdown from "components/Dropdown";
 import { toast } from "react-toastify";
 import capitalizeWords from "utils";
+import { apiClient } from "api/apiClient";
+import { Link } from "react-router-dom";
 
 const UserManagement = () => {
   const [rows, setRows] = useState([]);
@@ -42,6 +43,7 @@ const UserManagement = () => {
     { Header: "S no.", accessor: "sno", width: "5%", align: "left" },
     { Header: "name", accessor: "name", width: "25%", align: "left" },
     { Header: "phone", accessor: "phone", align: "left" },
+    { Header: "Device", accessor: "device", align: "center" },
     { Header: "goal", accessor: "goal", align: "left" },
     { Header: "gender", accessor: "gender", align: "left" },
     { Header: "Scans", accessor: "scans", align: "left" },
@@ -52,8 +54,8 @@ const UserManagement = () => {
     { Header: "purchase Date", accessor: "purchaseDate", align: "left" },
     { Header: "amount Paid", accessor: "amountPaid", align: "left" },
     { Header: "amount Refunded", accessor: "amountRefunded", align: "left" },
-    { Header: "isDisabled", accessor: "isDisabled", align: "left" },
-    { Header: "deletionRequestedAt", accessor: "deletionRequestedAt", align: "left" },
+    { Header: "Disabled", accessor: "isDisabled", align: "left" },
+    { Header: "deletion Requested At", accessor: "deletionRequestedAt", align: "left" },
     { Header: "action", accessor: "action", align: "left" },
   ];
 
@@ -105,10 +107,12 @@ const UserManagement = () => {
 
   const fetchUsers = async ({ pageIndex, pageSize, globalFilter }) => {
     try {
-      const token = localStorage.getItem("token");
-      const url = new URL(`${process.env.REACT_APP_API_URL}/api/v1/admin/user`);
+      const baseURL = process.env.REACT_APP_API_URL;
+
+      const url = new URL(`/api/v1/admin/user`, baseURL);
 
       const params = new URLSearchParams();
+
       if (goalFilter) params.append("goal", goalFilter);
       if (genderFilter) params.append("gender", genderFilter);
       if (diet) params.append("dietType", diet);
@@ -119,22 +123,18 @@ const UserManagement = () => {
 
       url.search = params.toString();
 
-      const response = await axios.get(url.toString(), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await apiClient.get(url.toString());
       const users = response.data?.data?.data || [];
 
       const formattedRows = users.map((user, index) => ({
         sno: <div>{pageSize * pageIndex + index + 1}</div>,
-        name: <a href={`/user/${user._id}`}>{capitalizeWords(user.details.name) || "User"}</a>,
+        name: <Link to={`/user/${user._id}`}>{capitalizeWords(user.details.name) || "User"}</Link>,
         goal: <div>{capitalizeWords(user.details.goal) || "-"}</div>,
         gender: <div>{capitalizeWords(user.details.gender) || "-"}</div>,
         scans: <div>{user.dailyFoodScans ?? "-"}</div>,
         diet: <div>{capitalizeWords(user.details.diet) || "-"}</div>,
         phone: <div>{user.mobileNumber || "-"}</div>,
+        device: <div>{capitalizeWords(user?.deviceInfo?.platform) || "-"}</div>,
         subscription: <div>{capitalizeWords(user?.subscription?.planType) || "-"}</div>,
         status: <div>{capitalizeWords(user?.subscription?.status) || "-"}</div>,
         addedBy: <div>{capitalizeWords(user?.subscription?.addedBy) || "-"}</div>,
@@ -148,7 +148,6 @@ const UserManagement = () => {
               : "-"}
           </div>
         ),
-
         purchaseDate: (
           <div>
             {user?.subscription?.purchaseDate
@@ -160,11 +159,12 @@ const UserManagement = () => {
         regDate: <div>{new Date(user.createdAt).toLocaleDateString()}</div>,
         action: (
           <div>
-            <a href={`/user/${user._id}`}>
+            <Link to={`/user/${user._id}`}>
               <IconButton color="secondary">
                 <VisibilityIcon />
               </IconButton>
-            </a>
+            </Link>
+
             {user.isDisabled ? (
               <IconButton
                 color="secondary"
@@ -236,22 +236,18 @@ const UserManagement = () => {
   };
 
   function handlegoalFilter(e) {
-    console.log(e.target.value, "ishan");
     setGoalFilter(e.target.value);
   }
 
   function handledietFilter(e) {
-    console.log(e.target.value, "ishan");
     setDiet(e.target.value);
   }
 
   function handlegenderFilter(e) {
-    console.log(e.target.value, "ishan");
     setGenderFilter(e.target.value);
   }
 
   function handlebmiFilter(e) {
-    console.log(e.target.value, "ishan");
     setBmiFilter(e.target.value);
   }
   return (
@@ -327,7 +323,6 @@ const UserManagement = () => {
           <DataTable
             table={{ columns, rows }}
             isSorted={false}
-            entriesPerPage={true}
             showTotalEntries={true}
             canSearch={true}
             noEndBorder

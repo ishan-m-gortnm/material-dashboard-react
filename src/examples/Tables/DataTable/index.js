@@ -57,7 +57,6 @@ function DataTable({
     useSortBy
   );
   const location = useLocation();
-  console.log("fetchDataRows prop:", fetchDataRows);
 
   const fetchData = async () => {
     try {
@@ -75,7 +74,6 @@ function DataTable({
   };
 
   useEffect(() => {
-    console.log("fetching rows..........");
     fetchData();
   }, [pageIndex, pageSize, globalFilter, reload]);
 
