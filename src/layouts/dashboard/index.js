@@ -18,15 +18,12 @@ function Dashboard() {
   const [reload, setReload] = useState(1);
 
   const columns = [
-    { Header: "S.No", accessor: "sno", align: "center" },
-    { Header: "Created At", accessor: "createdAt", align: "left" },
-    { Header: "Name", accessor: "name", align: "center" },
-    { Header: "Goal", accessor: "goal", align: "center" },
-    { Header: "Gender", accessor: "gender", align: "center" },
+    // { Header: "S.No", accessor: "sno", align: "left" },
+    { Header: "Name", accessor: "name", align: "left" },
     { Header: "Scans", accessor: "scans", align: "left" },
-    { Header: "Device", accessor: "device", align: "center" },
-    { Header: "Phone", accessor: "phone", align: "center" },
-    { Header: "Subscription", accessor: "subscription", align: "center" },
+    { Header: "Streak", accessor: "streak", align: "left" },
+    { Header: "Position", accessor: "position", align: "left" },
+    { Header: "Phone/Email", accessor: "phoneEmail", align: "left" },
   ];
 
   useEffect(() => {
@@ -155,23 +152,21 @@ function Dashboard() {
             table={{ columns, rows: [] }}
             fetchDataRows={async ({ pageIndex, pageSize }) => {
               const response = await apiClient.get(
-                `/api/v1/admin/user?page=${pageIndex}&limit=${pageSize}`
+                `/api/v1/admin/user/top-streaks?page=${pageIndex}&limit=${pageSize}`
               );
 
-              const data = response.data?.data?.data || [];
+              const data = response.data.data || [];
+              console.log("data", data);
               return {
                 data: data.map((entry, index) => ({
-                  sno: <div>{index + 1 + pageIndex * pageSize}</div>,
                   createdAt: <div>{new Date(entry.createdAt).toLocaleDateString()}</div>,
                   name: <div>{capitalizeWords(entry.details.name) || "User"}</div>,
-                  goal: <div>{capitalizeWords(entry.details.goal) || "-"}</div>,
-                  gender: <div>{capitalizeWords(entry.details.gender) || "-"}</div>,
                   scans: <div>{entry.dailyFoodScans || "0"}</div>,
-                  phone: <div>{entry.mobileNumber || "-"}</div>,
-                  device: <div>{capitalizeWords(entry?.deviceInfo?.platform) || "-"}</div>,
-                  subscription: <div>{capitalizeWords(entry?.subscription?.planType) || "-"}</div>,
+                  streak: <div>{entry.streak || "0"}</div>,
+                  position: <div>{entry.position || "0"}</div>,
+                  phoneEmail: <div>{entry.mobileNumber || entry.email || "-"}</div>,
                 })),
-                total: response.data?.data?.count || 0,
+                total: response.data?.count || 0,
               };
             }}
             isSorted={false}
