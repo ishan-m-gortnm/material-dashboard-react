@@ -155,18 +155,17 @@ function Dashboard() {
                 `/api/v1/admin/user/top-streaks?page=${pageIndex}&limit=${pageSize}`
               );
 
-              const data = response.data.data || [];
-              console.log("data", data);
+              const data = response.data.data.users || [];
               return {
                 data: data.map((entry, index) => ({
                   createdAt: <div>{new Date(entry.createdAt).toLocaleDateString()}</div>,
                   name: <div>{capitalizeWords(entry.details.name) || "User"}</div>,
                   scans: <div>{entry.dailyFoodScans || "0"}</div>,
-                  streak: <div>{entry.streak || "0"}</div>,
+                  streak: <div>{entry.bestStreak || "0"}</div>,
                   position: <div>{entry.position || "0"}</div>,
                   phoneEmail: <div>{entry.mobileNumber || entry.email || "-"}</div>,
                 })),
-                total: response.data?.count || 0,
+                total: response.data?.data?.total || 0,
               };
             }}
             isSorted={false}
