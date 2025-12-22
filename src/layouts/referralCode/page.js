@@ -27,6 +27,7 @@ import ConfirmationPopUp from "components/confirmationPopup/page";
 import { toast } from "react-toastify";
 import capitalizeWords from "utils";
 import { Link } from "react-router-dom";
+import UserQRCode from "components/Common/QR_Code_Generator";
 
 const ReferralCode = () => {
   const [loading, setLoading] = useState(false); // Add this
@@ -188,6 +189,7 @@ const ReferralCode = () => {
         specialUserType: <div>{capitalizeWords(user.userProfile || user.specialUserType)}</div>,
         specialUserIndex: <div>{user.referredUsersCount || 0}</div>,
         referCode: <div>{user.referCode}</div>,
+        qrCodeString: <UserQRCode qrCodeString={user?.qrCodeString} /> || <div>-</div>,
         action: (
           <div>
             <IconButton color="secondary" onClick={() => handleEditPopup(user)}>
@@ -216,6 +218,7 @@ const ReferralCode = () => {
     { Header: "Total Referral Users", accessor: "specialUserIndex", align: "center" },
     { Header: "ReferralCode", accessor: "referCode", align: "center" },
     { Header: "Mobile Number", accessor: "mobileNumber", align: "center" },
+    { Header: "QR Code", accessor: "qrCodeString", align: "center" },
     { Header: "Action", accessor: "action", align: "center" },
   ];
 
